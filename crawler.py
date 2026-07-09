@@ -4,7 +4,6 @@ Crawl historical lottery results from vietlott.vn via AjaxPro API
 Supports: Mega 6/45, Power 6/55
 """
 
-import requests
 import json
 import re
 import csv
@@ -12,6 +11,15 @@ import time
 import os
 from datetime import datetime
 from bs4 import BeautifulSoup
+
+# curl_cffi gia lap TLS fingerprint Chrome that -> vuot Cloudflare 403
+# (requests thuong bi Cloudflare nhan dien la bot tren IP datacenter)
+try:
+    from curl_cffi import requests
+    IMPERSONATE = {'impersonate': 'chrome'}
+except ImportError:
+    import requests
+    IMPERSONATE = {}
 
 BASE_URL = "https://vietlott.vn/ajaxpro"
 RENDER_URL = f"{BASE_URL}/Vietlott.Utility.WebEnvironments,Vietlott.Utility.ashx"
@@ -30,7 +38,7 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 def get_render_info() -> dict:
     """Get RenderInfo object required for all AjaxPro calls."""
     h = {**HEADERS, "X-AjaxPro-Method": "ServerSideFrontEndCreateRenderInfo"}
-    resp = requests.post(RENDER_URL, headers=h, data='{"SiteId":"main.frontend.vi"}', timeout=15)
+    resp = requests.post(RENDER_URL, headers=h, data='{"SiteId":"main.frontend.vi"}', timeout=15, **IMPERSONATE)
     resp.raise_for_status()
     ri = resp.json()["value"]
     ri["SiteLang"] = "vi"
@@ -43,7 +51,7 @@ def fetch_draw(game: str, draw_id: str, render_info: dict) -> dict | None:
     h = {**HEADERS, "X-AjaxPro-Method": "ServerSideDrawResult"}
     body = json.dumps({"ORenderInfo": render_info, "Key": "56779db8", "DrawId": draw_id})
 
-    resp = requests.post(url, headers=h, data=body, timeout=15)
+    resp = requests.post(url, headers=h, data=body, timeout=15, **IMPERSONATE)
     resp.raise_for_status()
     data = resp.json()
     v = data.get("value", {})

@@ -29,7 +29,13 @@ def build_state():
             if new:
                 status.append(f"{GAME_NAMES[game]}: +{len(new)} ky moi (den #{new[-1]['draw_id']})")
         except Exception as e:
-            status.append(f"{GAME_NAMES[game]}: loi crawl ({e})")
+            # Crawl truc tiep bi chan (403...) -> dung dataset cong khai
+            try:
+                from fallback_source import sync_from_public_dataset
+                n = sync_from_public_dataset(game)
+                status.append(f"{GAME_NAMES[game]}: +{n} ky (dataset cong khai - crawl truc tiep loi)")
+            except Exception as e2:
+                status.append(f"{GAME_NAMES[game]}: loi crawl ({e}) + fallback loi ({e2})")
 
     check_history()
 

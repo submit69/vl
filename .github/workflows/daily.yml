@@ -2,8 +2,8 @@ name: daily-update
 
 on:
   schedule:
-    # 11:45 UTC = 18:45 VN — ngay sau khi quay xong (18:00-18:30)
-    - cron: '45 11 * * *'
+    # 12:15 UTC = 19:15 VN — sau khi quay xong (18:00-18:30), du thoi gian cho fallback dataset
+    - cron: '15 12 * * *'
     # 01:00 UTC = 08:00 VN — cap nhat buoi sang (du phong)
     - cron: '0 1 * * *'
   workflow_dispatch: {}
@@ -22,7 +22,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 numpy
+        run: pip install requests beautifulsoup4 numpy curl_cffi
 
       - name: Crawl + predict + generate site
         run: python generate_site.py
