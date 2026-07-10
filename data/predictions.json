@@ -17,7 +17,9 @@
     "power": 19,
     "sum": 161,
     "odd": 3,
-    "avg_score": 141.0
+    "avg_score": 141.0,
+    "matched": 0,
+    "power_matched": false
    },
    {
     "numbers": [
@@ -31,7 +33,9 @@
     "power": 53,
     "sum": 171,
     "odd": 3,
-    "avg_score": 138.4
+    "avg_score": 138.4,
+    "matched": 0,
+    "power_matched": false
    },
    {
     "numbers": [
@@ -45,7 +49,9 @@
     "power": 34,
     "sum": 169,
     "odd": 3,
-    "avg_score": 135.2
+    "avg_score": 135.2,
+    "matched": 0,
+    "power_matched": false
    }
   ],
   "power_top": [
@@ -73,7 +79,16 @@
    34
   ],
   "win_prob_pct": 3.95,
-  "actual": null
+  "actual": [
+   2,
+   9,
+   10,
+   14,
+   17,
+   49
+  ],
+  "actual_power": 45,
+  "best_matched": 0
  },
  {
   "game": "645",
@@ -143,6 +158,82 @@
    4
   ],
   "win_prob_pct": 6.98,
+  "actual": null
+ },
+ {
+  "game": "655",
+  "game_name": "Power 6/55",
+  "draw_id": "01370",
+  "predicted_at": "10/07/2026 10:02",
+  "sets": [
+   {
+    "numbers": [
+     5,
+     13,
+     22,
+     28,
+     40,
+     46
+    ],
+    "power": 19,
+    "sum": 154,
+    "odd": 2,
+    "avg_score": 138.4
+   },
+   {
+    "numbers": [
+     1,
+     16,
+     18,
+     23,
+     43,
+     44
+    ],
+    "power": 53,
+    "sum": 145,
+    "odd": 3,
+    "avg_score": 141.2
+   },
+   {
+    "numbers": [
+     1,
+     4,
+     32,
+     34,
+     43,
+     53
+    ],
+    "power": 34,
+    "sum": 167,
+    "odd": 3,
+    "avg_score": 135.1
+   }
+  ],
+  "power_top": [
+   19,
+   53,
+   34,
+   2,
+   33
+  ],
+  "top15": [
+   1,
+   8,
+   28,
+   23,
+   16,
+   13,
+   32,
+   22,
+   5,
+   18,
+   34,
+   53,
+   26,
+   43,
+   21
+  ],
+  "win_prob_pct": 3.95,
   "actual": null
  }
 ]
