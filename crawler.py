@@ -229,9 +229,13 @@ def load_data(game: str = "645") -> list[dict]:
         return []
 
     rows = []
+    seen_ids = set()
     with open(path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
+            if row["draw_id"] in seen_ids:
+                continue  # chong trung lap
+            seen_ids.add(row["draw_id"])
             numbers = [int(row[f"n{i}"]) for i in range(1, 7)]
             entry = {
                 "date": row["date"],
