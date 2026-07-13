@@ -2,14 +2,14 @@ name: daily-update
 
 on:
   schedule:
-    # 12:15 UTC = 19:15 VN — sau khi quay xong (18:00-18:30), du thoi gian cho fallback dataset
-    - cron: '15 12 * * *'
-    # 01:00 UTC = 08:00 VN — cap nhat buoi sang (du phong)
-    - cron: '0 1 * * *'
+    - cron: '15 12 * * *'   # 19:15 VN - sau gio quay
+    - cron: '0 1 * * *'     # 08:00 VN - du phong
   workflow_dispatch: {}
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   update:
@@ -34,3 +34,19 @@ jobs:
           git add data public
           git diff --cached --quiet && echo "No changes" || git commit -m "auto-update $(date -u +%F_%H:%M)"
           git push
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
