@@ -115,7 +115,8 @@ def render_static(state):
           <table>{rows}</table>
         </div>'''
 
-    hist_html = ''
+    # Lich su tach theo game -> 2 tab
+    hist_by_game = {'645': '', '655': ''}
     for p in state['history']:
         actual_set = set(p['actual'])
         sets_html = ''
@@ -123,13 +124,21 @@ def render_static(state):
             m = s.get('matched', 0)
             badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/6</span>'
             sets_html += f'<div class="predset">{badge} {balls_html(s["numbers"], s.get("power"), hits=actual_set)}</div>'
-        hist_html += f'''<div class="card">
+        hist_by_game[p['game']] += f'''<div class="card">
           <h3>{p['game_name']} #{p['draw_id']} <span class="meta">du doan {p['predicted_at']}</span></h3>
           <div class="predset"><span class="setlabel">Ket qua</span> {balls_html(p['actual'], p.get('actual_power'))}</div>
           {sets_html}
         </div>'''
-    if not hist_html:
-        hist_html = '<p class="muted">Chua co lich su doi chieu.</p>'
+    for g in hist_by_game:
+        if not hist_by_game[g]:
+            hist_by_game[g] = '<p class="muted">Chua co lich su doi chieu.</p>'
+
+    hist_html = f'''<div class="tabs">
+      <button class="tab-btn active" onclick="showTab('645', this)">Mega 6/45</button>
+      <button class="tab-btn" onclick="showTab('655', this)">Power 6/55</button>
+    </div>
+    <div id="tab-645" class="tab-content">{hist_by_game['645']}</div>
+    <div id="tab-655" class="tab-content" style="display:none">{hist_by_game['655']}</div>'''
 
     st = state['stats']
     dist_html = ' | '.join(f'{m} so: {c} bo' for m, c in sorted(st['match_dist'].items(), reverse=True))
@@ -157,7 +166,20 @@ def render_static(state):
   .badge.good {{ background: #27ae60; }} .badge.ok {{ background: #e67e22; }}
   table {{ border-collapse: collapse; }} td {{ padding: 4px 10px; }}
   .warn {{ background: #3d2b18; border-left: 4px solid #e67e22; padding: 10px 14px; border-radius: 6px; margin: 14px 0; }}
-</style></head><body>
+  .tabs {{ margin: 10px 0 4px; }}
+  .tab-btn {{ background: #1a2235; color: #8a94ad; border: 1px solid #2a3550; padding: 8px 22px;
+             border-radius: 8px 8px 0 0; cursor: pointer; font-size: 15px; font-weight: 600; margin-right: 4px; }}
+  .tab-btn.active {{ background: #2a3550; color: #f5c542; border-bottom-color: #2a3550; }}
+</style>
+<script>
+function showTab(game, btn) {{
+  document.getElementById('tab-645').style.display = game === '645' ? '' : 'none';
+  document.getElementById('tab-655').style.display = game === '655' ? '' : 'none';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}}
+</script>
+</head><body>
 <h1>🎰 Vietlott Dashboard</h1>
 <div class="meta">Cap nhat tu dong: {state['now']} (gio VN) — {status_html}</div>
 
