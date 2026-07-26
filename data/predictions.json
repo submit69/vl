@@ -1237,7 +1237,8 @@
     "power": null,
     "sum": 156,
     "odd": 4,
-    "avg_score": 172.4
+    "avg_score": 172.4,
+    "matched": 0
    },
    {
     "numbers": [
@@ -1251,7 +1252,8 @@
     "power": null,
     "sum": 137,
     "odd": 3,
-    "avg_score": 161.2
+    "avg_score": 161.2,
+    "matched": 2
    },
    {
     "numbers": [
@@ -1265,7 +1267,8 @@
     "power": null,
     "sum": 137,
     "odd": 3,
-    "avg_score": 157.4
+    "avg_score": 157.4,
+    "matched": 0
    }
   ],
   "power_top": [],
@@ -1287,7 +1290,16 @@
    28
   ],
   "win_prob_pct": 6.98,
-  "actual": null
+  "actual": [
+   13,
+   16,
+   27,
+   33,
+   41,
+   44
+  ],
+  "actual_power": null,
+  "best_matched": 2
  },
  {
   "game": "655",
@@ -1363,6 +1375,76 @@
    55
   ],
   "win_prob_pct": 3.95,
+  "actual": null
+ },
+ {
+  "game": "645",
+  "game_name": "Mega 6/45",
+  "draw_id": "01542",
+  "predicted_at": "26/07/2026 13:56",
+  "sets": [
+   {
+    "numbers": [
+     6,
+     13,
+     22,
+     30,
+     31,
+     33
+    ],
+    "power": null,
+    "sum": 135,
+    "odd": 3,
+    "avg_score": 154.8
+   },
+   {
+    "numbers": [
+     3,
+     13,
+     26,
+     29,
+     35,
+     44
+    ],
+    "power": null,
+    "sum": 150,
+    "odd": 4,
+    "avg_score": 165.6
+   },
+   {
+    "numbers": [
+     3,
+     9,
+     14,
+     16,
+     41,
+     45
+    ],
+    "power": null,
+    "sum": 128,
+    "odd": 4,
+    "avg_score": 167.6
+   }
+  ],
+  "power_top": [],
+  "top15": [
+   44,
+   45,
+   9,
+   37,
+   16,
+   13,
+   26,
+   30,
+   41,
+   31,
+   22,
+   35,
+   29,
+   17,
+   11
+  ],
+  "win_prob_pct": 6.98,
   "actual": null
  }
 ]
