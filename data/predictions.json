@@ -1492,7 +1492,9 @@
     "power": 19,
     "sum": 150,
     "odd": 4,
-    "avg_score": 136.3
+    "avg_score": 136.3,
+    "matched": 1,
+    "power_matched": false
    },
    {
     "numbers": [
@@ -1506,7 +1508,9 @@
     "power": 53,
     "sum": 192,
     "odd": 4,
-    "avg_score": 137.5
+    "avg_score": 137.5,
+    "matched": 0,
+    "power_matched": false
    },
    {
     "numbers": [
@@ -1520,7 +1524,9 @@
     "power": 34,
     "sum": 145,
     "odd": 3,
-    "avg_score": 144.5
+    "avg_score": 144.5,
+    "matched": 0,
+    "power_matched": false
    }
   ],
   "power_top": [
@@ -1548,7 +1554,14 @@
    48
   ],
   "win_prob_pct": 3.95,
-  "actual": null,
+  "actual": [
+   2,
+   12,
+   24,
+   28,
+   43,
+   49
+  ],
   "wheel": {
    "pool": [
     1,
@@ -1594,8 +1607,19 @@
      41
     ]
    ],
-   "guarantee": "3-if-3"
-  }
+   "guarantee": "3-if-3",
+   "pool_hits": 0,
+   "matched": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "best_matched": 0,
+   "guarantee_ok": true
+  },
+  "actual_power": 51,
+  "best_matched": 1
  },
  {
   "game": "645",
@@ -1713,5 +1737,128 @@
    ],
    "guarantee": "3-if-3"
   }
+ },
+ {
+  "game": "655",
+  "game_name": "Power 6/55",
+  "draw_id": "01379",
+  "predicted_at": "30/07/2026 14:32",
+  "sets": [
+   {
+    "numbers": [
+     3,
+     17,
+     20,
+     22,
+     33,
+     53
+    ],
+    "power": 19,
+    "sum": 148,
+    "odd": 4,
+    "avg_score": 140.9
+   },
+   {
+    "numbers": [
+     1,
+     9,
+     23,
+     40,
+     45,
+     48
+    ],
+    "power": 53,
+    "sum": 166,
+    "odd": 4,
+    "avg_score": 133.2
+   },
+   {
+    "numbers": [
+     2,
+     8,
+     22,
+     32,
+     41,
+     43
+    ],
+    "power": 34,
+    "sum": 148,
+    "odd": 2,
+    "avg_score": 149.6
+   }
+  ],
+  "wheel": {
+   "pool": [
+    1,
+    8,
+    9,
+    22,
+    24,
+    33,
+    41,
+    45
+   ],
+   "tickets": [
+    [
+     1,
+     9,
+     22,
+     33,
+     41,
+     45
+    ],
+    [
+     1,
+     8,
+     22,
+     24,
+     33,
+     41
+    ],
+    [
+     8,
+     9,
+     24,
+     33,
+     41,
+     45
+    ],
+    [
+     1,
+     8,
+     9,
+     22,
+     24,
+     45
+    ]
+   ],
+   "guarantee": "3-if-3"
+  },
+  "power_top": [
+   19,
+   53,
+   34,
+   2,
+   30
+  ],
+  "top15": [
+   22,
+   8,
+   41,
+   33,
+   24,
+   1,
+   9,
+   45,
+   20,
+   23,
+   17,
+   2,
+   55,
+   48,
+   53
+  ],
+  "win_prob_pct": 3.95,
+  "actual": null
  }
 ]
