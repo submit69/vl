@@ -98,10 +98,25 @@ def render_static(state):
         power_html = ''
         if p['power_top']:
             power_html = '<div class="meta">Power goi y: ' + ', '.join(f'{n:02d}' for n in p['power_top']) + '</div>'
+
+        wheel_html = ''
+        w = p.get('wheel')
+        if w:
+            wt = ''
+            for i, t in enumerate(w['tickets']):
+                wt += f'<div class="predset"><span class="setlabel">Ve {i+1}</span> {balls_html(t)}</div>'
+            wheel_html = f'''<div class="wheel">
+              <h4>🎡 Wheeling System ({len(w['tickets'])} ve - {len(w['tickets'])*10}k)</h4>
+              <div class="predset"><span class="setlabel">Pool</span> {balls_html(w['pool'])}</div>
+              {wt}
+              <div class="meta">DAM BAO: neu ≥3 so trong pool 8 so xuat hien trong ket qua
+              → chac chan ≥1 ve trung Giai 3 (da kiem chung toan hoc)</div>
+            </div>'''
+
         next_html += f'''<div class="card">
           <h3>{p['game_name']} - Ky #{p['draw_id']}</h3>
           <div class="meta">Du doan luc {p['predicted_at']} | XS trung Giai 3+ (3 ve): ~{p['win_prob_pct']}%</div>
-          {sets_html}{power_html}
+          {sets_html}{power_html}{wheel_html}
         </div>'''
 
     latest_html = ''
@@ -124,10 +139,24 @@ def render_static(state):
             m = s.get('matched', 0)
             badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/6</span>'
             sets_html += f'<div class="predset">{badge} {balls_html(s["numbers"], s.get("power"), hits=actual_set)}</div>'
+        wheel_hist = ''
+        w = p.get('wheel')
+        if w and 'matched' in w:
+            g_ok = w.get('guarantee_ok', True)
+            wt = ''
+            for i, t in enumerate(w['tickets']):
+                m = w['matched'][i]
+                badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/6</span>'
+                wt += f'<div class="predset">{badge} {balls_html(t, hits=actual_set)}</div>'
+            g_badge = '' if g_ok else ' <span class="badge">LOI DAM BAO?!</span>'
+            wheel_hist = f'''<div class="wheel">
+              <h4>🎡 Wheel: pool trung {w['pool_hits']}/8 so{g_badge}</h4>
+              {wt}
+            </div>'''
         hist_by_game[p['game']] += f'''<div class="card">
           <h3>{p['game_name']} #{p['draw_id']} <span class="meta">du doan {p['predicted_at']}</span></h3>
           <div class="predset"><span class="setlabel">Ket qua</span> {balls_html(p['actual'], p.get('actual_power'))}</div>
-          {sets_html}
+          {sets_html}{wheel_hist}
         </div>'''
     for g in hist_by_game:
         if not hist_by_game[g]:
@@ -166,6 +195,8 @@ def render_static(state):
   .badge.good {{ background: #27ae60; }} .badge.ok {{ background: #e67e22; }}
   table {{ border-collapse: collapse; }} td {{ padding: 4px 10px; }}
   .warn {{ background: #3d2b18; border-left: 4px solid #e67e22; padding: 10px 14px; border-radius: 6px; margin: 14px 0; }}
+  .wheel {{ border-top: 1px dashed #2a3550; margin-top: 10px; padding-top: 8px; }}
+  .wheel h4 {{ margin: 4px 0 8px; color: #7ecbff; }}
   .tabs {{ margin: 10px 0 4px; }}
   .tab-btn {{ background: #1a2235; color: #8a94ad; border: 1px solid #2a3550; padding: 8px 22px;
              border-radius: 8px 8px 0 0; cursor: pointer; font-size: 15px; font-weight: 600; margin-right: 4px; }}
