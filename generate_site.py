@@ -121,14 +121,20 @@ def render_static(state):
         anti_html = ''
         a = p.get('antishare')
         if a:
+            if p['game'] == '645':
+                evidence = ('Kiem chung TOAN BO 1,542 ky: ky ra nhieu so pho bien co +16% nguoi trung, '
+                            'va hieu ung DANG MANH LEN (3 nam gan nhat: +18%). Vi du ky 05-08-09-11-20-29 '
+                            'co 72,470 nguoi trung G3 vs 13,945 cua ky toan so cao - chenh 5.2 lan.')
+            else:
+                evidence = ('Kiem chung 1,378 ky: hieu ung tung manh (+22% giai doan 2017-2020) nhung '
+                            'DANG PHAI NHAT (3 nam gan nhat chi +2%) - nguoi choi 6/55 ngay cang chon ngau nhien. '
+                            'Bo nay huu ich voi 6/45 hon.')
             anti_html = f'''<div class="wheel">
               <h4>💎 Bo Jackpot thong minh (anti-share)</h4>
               <div class="predset"><span class="setlabel">Ve</span> {balls_html(a['numbers'], a.get('power'))}</div>
               <div class="meta">Bo so IT NGUOI CUNG DANH nhat (ne ngay sinh, so phong thuy, pattern dep).
-              Xac suat trung khong doi - nhung NEU trung jackpot thi kha nang an tron cao hon han
-              (share_score={a['share_score']} vs ~13-18 cua bo pho bien).
-              Da kiem chung tren 500 ky thuc te: ky ra nhieu so pho bien co +22% nguoi trung giai (6/45)
-              - vi du ky 05-08-09-11-20-29 co 72,470 nguoi trung G3 vs 13,945 cua ky toan so cao.</div>
+              Xac suat trung khong doi - nhung NEU trung jackpot thi kha nang an tron cao hon
+              (share_score={a['share_score']} vs ~13-18 cua bo pho bien). {evidence}</div>
             </div>'''
 
         next_html += f'''<div class="card">

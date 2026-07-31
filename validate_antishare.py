@@ -115,8 +115,52 @@ def analyze(game):
     return rows
 
 
+def analyze_by_era(game, n_eras=3):
+    """Chia lich su thanh cac thoi ky -> hanh vi nguoi choi co doi khong?"""
+    path = os.path.join(DATA_DIR, f'winners_{game}.csv')
+    if not os.path.exists(path):
+        return
+    winners = {}
+    with open(path, 'r', encoding='utf-8') as f:
+        for row in csv.DictReader(f):
+            try:
+                winners[row['draw_id']] = int(row['g3_w'])
+            except (ValueError, KeyError):
+                continue
+
+    data = load_data(game)
+    rows = []
+    for e in data:
+        g3 = winners.get(e['draw_id'])
+        if g3 is None:
+            continue
+        rows.append((int(e['draw_id']), float(np.mean([popularity(n) for n in e['numbers']])), g3, e['date']))
+    rows.sort()
+    if len(rows) < n_eras * 60:
+        print(f'[{game}] Chua du data cho phan tich thoi ky ({len(rows)} ky)')
+        return
+
+    print(f'=== {("Mega 6/45" if game == "645" else "Power 6/55")} - PHAN TICH THEO THOI KY ({len(rows)} ky) ===')
+    chunk = len(rows) // n_eras
+    for i in range(n_eras):
+        part = rows[i * chunk: (i + 1) * chunk if i < n_eras - 1 else len(rows)]
+        pops = np.array([r[1] for r in part])
+        g3s = np.array([r[2] for r in part], dtype=float)
+        med = rolling_median(g3s, 50)
+        med[med == 0] = 1
+        norm = g3s / med
+        rho = spearman(pops, norm)
+        idx = np.argsort(pops)
+        q = len(part) // 4
+        lift = (norm[idx[-q:]].mean() / norm[idx[:q]].mean() - 1) * 100
+        print(f'  {part[0][3]} -> {part[-1][3]} ({len(part)} ky): Spearman={rho:+.3f}, lift={lift:+.1f}%')
+    print()
+
+
 if __name__ == '__main__':
     if sys.platform == 'win32':
         sys.stdout.reconfigure(encoding='utf-8')
     for g in ('645', '655'):
         analyze(g)
+    for g in ('645', '655'):
+        analyze_by_era(g)
