@@ -118,10 +118,21 @@ def render_static(state):
               <div class="meta">{note}</div>
             </div>'''
 
+        anti_html = ''
+        a = p.get('antishare')
+        if a:
+            anti_html = f'''<div class="wheel">
+              <h4>💎 Bo Jackpot thong minh (anti-share)</h4>
+              <div class="predset"><span class="setlabel">Ve</span> {balls_html(a['numbers'], a.get('power'))}</div>
+              <div class="meta">Bo so IT NGUOI CUNG DANH nhat (ne ngay sinh, so phong thuy, pattern dep).
+              Xac suat trung khong doi - nhung NEU trung jackpot thi kha nang an tron cao hon han
+              (share_score={a['share_score']} vs ~13-18 cua bo pho bien)</div>
+            </div>'''
+
         next_html += f'''<div class="card">
           <h3>{p['game_name']} - Ky #{p['draw_id']}</h3>
           <div class="meta">Du doan luc {p['predicted_at']} | XS trung Giai 3+ (3 ve): ~{p['win_prob_pct']}%</div>
-          {sets_html}{power_html}{wheel_html}
+          {sets_html}{power_html}{wheel_html}{anti_html}
         </div>'''
 
     latest_html = ''
@@ -160,10 +171,16 @@ def render_static(state):
               <h4>🎡 {label}: pool trung {w['pool_hits']}/{len(w['pool'])} so{g_badge}</h4>
               {wt}
             </div>'''
+        anti_hist = ''
+        a = p.get('antishare')
+        if a and 'matched' in a:
+            m = a['matched']
+            badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/6</span>'
+            anti_hist = f'<div class="predset">{badge} 💎 {balls_html(a["numbers"], a.get("power"), hits=actual_set)}</div>'
         hist_by_game[p['game']] += f'''<div class="card">
           <h3>{p['game_name']} #{p['draw_id']} <span class="meta">du doan {p['predicted_at']}</span></h3>
           <div class="predset"><span class="setlabel">Ket qua</span> {balls_html(p['actual'], p.get('actual_power'))}</div>
-          {sets_html}{wheel_hist}
+          {sets_html}{anti_hist}{wheel_hist}
         </div>'''
     for g in hist_by_game:
         if not hist_by_game[g]:

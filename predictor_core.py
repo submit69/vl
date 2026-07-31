@@ -217,6 +217,18 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
     except Exception:
         pass
 
+    # Anti-share: bo "jackpot thong minh" - it nguoi cung danh nhat
+    # (khong doi xac suat trung; toi da tien nhan duoc NEU trung jackpot)
+    antishare = None
+    try:
+        from antishare import generate_antishare, antishare_power
+        a = generate_antishare(max_num)
+        antishare = {'numbers': a['numbers'], 'share_score': a['share_score']}
+        if game == '655':
+            antishare['power'] = antishare_power(max_num, exclude=a['numbers'])
+    except Exception:
+        pass
+
     return {
         'game': game,
         'n_draws': n_total,
@@ -226,6 +238,7 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
         'sets': result_sets,
         'wheel': wheel,
         'wheel12': wheel12,
+        'antishare': antishare,
         'top15': top15_detail,
         'power_top': power_top,
         'top_pairs': [{'pair': list(p), 'count': c} for p, c in pairs.most_common(8)],

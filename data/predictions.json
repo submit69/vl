@@ -1819,6 +1819,17 @@
     ]
    ],
    "guarantee": "3-if-4"
+  },
+  "antishare": {
+   "numbers": [
+    14,
+    32,
+    34,
+    37,
+    42,
+    44
+   ],
+   "share_score": 6.0
   }
  },
  {
@@ -2025,6 +2036,18 @@
     ]
    ],
    "guarantee": "3-if-4"
+  },
+  "antishare": {
+   "numbers": [
+    32,
+    34,
+    42,
+    44,
+    47,
+    54
+   ],
+   "share_score": 5.75,
+   "power": 51
   }
  }
 ]

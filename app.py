@@ -106,6 +106,12 @@ def check_history():
                 w['best_matched'] = max(w['matched'])
                 # Cam ket: pool_hits >= nguong (3-if-3: 3, 3-if-4: 4) thi best >= 3
                 w['guarantee_ok'] = (w['pool_hits'] < min_hits) or (w['best_matched'] >= 3)
+            # Cham diem bo anti-share
+            a = p.get('antishare')
+            if a:
+                a['matched'] = len(set(a['numbers']) & actual_set)
+                if p['game'] == '655' and a.get('power') is not None:
+                    a['power_matched'] = (a['power'] == actual.get('power'))
             changed = True
     if changed:
         save_predictions(preds)
@@ -132,6 +138,7 @@ def predict_today(game):
         'sets': result['sets'],
         'wheel': result.get('wheel'),
         'wheel12': result.get('wheel12'),
+        'antishare': result.get('antishare'),
         'power_top': result['power_top'],
         'top15': [t['number'] for t in result['top15']],
         'win_prob_pct': result['win_prob_pct'],
