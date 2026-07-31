@@ -13,6 +13,26 @@ nhieu lan khoi dong ngau nhien + kiem chung exhaustive.
 import random
 from itertools import combinations
 
+# ── Templates tinh san (chi so 0-based, da verify exhaustive) ──
+# Pool 8 so, 4 ve: dam bao 3-if-3 (3 so pool ra -> chac chan 1 ve trung >= 3)
+WHEEL_8_3IF3 = [
+    [0, 2, 3, 5, 6, 7], [0, 1, 3, 4, 5, 6],
+    [1, 2, 4, 5, 6, 7], [0, 1, 2, 3, 4, 7],
+]
+# Pool 12 so, 8 ve: dam bao 3-if-4 (4 so pool ra -> chac chan 1 ve trung >= 3;
+# 3 so pool ra -> ~70% co ve trung 3)
+WHEEL_12_3IF4 = [
+    [0, 4, 5, 8, 10, 11], [0, 1, 2, 3, 6, 7], [1, 3, 4, 7, 9, 11],
+    [2, 5, 6, 8, 9, 10], [2, 4, 5, 6, 8, 11], [1, 3, 4, 7, 10, 11],
+    [0, 1, 3, 5, 7, 9], [0, 2, 5, 6, 9, 10],
+]
+
+
+def apply_template(pool, template):
+    """Map pool so thuc (sorted) vao template chi so -> list ve."""
+    pool = sorted(pool)
+    return [sorted(pool[i] for i in ticket) for ticket in template]
+
 
 def generate_wheel(pool, max_restarts=300, seed=42):
     """

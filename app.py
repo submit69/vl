@@ -95,15 +95,17 @@ def check_history():
                 if p['game'] == '655' and s.get('power') is not None:
                     s['power_matched'] = (s['power'] == actual.get('power'))
             p['best_matched'] = max(s['matched'] for s in p['sets'])
-            # Cham diem wheel (neu ky nay co)
-            w = p.get('wheel')
-            if w:
-                actual_set = set(actual['numbers'])
+            # Cham diem cac wheel (neu ky nay co)
+            actual_set = set(actual['numbers'])
+            for key, min_hits in (('wheel', 3), ('wheel12', 4)):
+                w = p.get(key)
+                if not w:
+                    continue
                 w['pool_hits'] = len(set(w['pool']) & actual_set)
                 w['matched'] = [len(set(t) & actual_set) for t in w['tickets']]
                 w['best_matched'] = max(w['matched'])
-                # Kiem chung cam ket: pool_hits >= 3 thi best >= 3
-                w['guarantee_ok'] = (w['pool_hits'] < 3) or (w['best_matched'] >= 3)
+                # Cam ket: pool_hits >= nguong (3-if-3: 3, 3-if-4: 4) thi best >= 3
+                w['guarantee_ok'] = (w['pool_hits'] < min_hits) or (w['best_matched'] >= 3)
             changed = True
     if changed:
         save_predictions(preds)
@@ -129,6 +131,7 @@ def predict_today(game):
         'predicted_at': datetime.now().strftime('%d/%m/%Y %H:%M'),
         'sets': result['sets'],
         'wheel': result.get('wheel'),
+        'wheel12': result.get('wheel12'),
         'power_top': result['power_top'],
         'top15': [t['number'] for t in result['top15']],
         'win_prob_pct': result['win_prob_pct'],

@@ -203,16 +203,17 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
             'score': round(scores[n], 1),
         })
 
-    # Wheeling system: pool = top 8 so theo score, 4 ve, dam bao 3-if-3
-    # (neu >= 3 so trong pool xuat hien -> chac chan >= 1 ve trung Giai 3)
+    # Wheeling systems (dung template tinh san, da verify):
+    # - wheel:   pool 8 (top 8),  4 ve, dam bao 3-if-3
+    # - wheel12: pool 12 (top 12), 8 ve, dam bao 3-if-4 (+~70% thang khi pool trung dung 3)
     wheel = None
+    wheel12 = None
     try:
-        from wheeling import generate_wheel, verify_wheel
-        pool = sorted(sorted_nums[:8])
-        tickets = generate_wheel(pool, max_restarts=200)
-        ok, _ = verify_wheel(pool, tickets)
-        if ok:
-            wheel = {'pool': pool, 'tickets': tickets, 'guarantee': '3-if-3'}
+        from wheeling import apply_template, WHEEL_8_3IF3, WHEEL_12_3IF4
+        pool8 = sorted(sorted_nums[:8])
+        wheel = {'pool': pool8, 'tickets': apply_template(pool8, WHEEL_8_3IF3), 'guarantee': '3-if-3'}
+        pool12 = sorted(sorted_nums[:12])
+        wheel12 = {'pool': pool12, 'tickets': apply_template(pool12, WHEEL_12_3IF4), 'guarantee': '3-if-4'}
     except Exception:
         pass
 
@@ -224,6 +225,7 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
         'last_draw_id': data[-1]['draw_id'],
         'sets': result_sets,
         'wheel': wheel,
+        'wheel12': wheel12,
         'top15': top15_detail,
         'power_top': power_top,
         'top_pairs': [{'pair': list(p), 'count': c} for p, c in pairs.most_common(8)],

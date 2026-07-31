@@ -100,17 +100,22 @@ def render_static(state):
             power_html = '<div class="meta">Power goi y: ' + ', '.join(f'{n:02d}' for n in p['power_top']) + '</div>'
 
         wheel_html = ''
-        w = p.get('wheel')
-        if w:
+        wheel_defs = [
+            ('wheel', '🎡 Wheel 8 so', 'DAM BAO 3-if-3: ≥3 so pool xuat hien → chac chan ≥1 ve trung Giai 3'),
+            ('wheel12', '🎡 Wheel 12 so', 'DAM BAO 3-if-4: ≥4 so pool ra → chac chan co giai; dung 3 so ra → ~70% co giai'),
+        ]
+        for key, title, note in wheel_defs:
+            w = p.get(key)
+            if not w:
+                continue
             wt = ''
             for i, t in enumerate(w['tickets']):
                 wt += f'<div class="predset"><span class="setlabel">Ve {i+1}</span> {balls_html(t)}</div>'
-            wheel_html = f'''<div class="wheel">
-              <h4>🎡 Wheeling System ({len(w['tickets'])} ve - {len(w['tickets'])*10}k)</h4>
+            wheel_html += f'''<div class="wheel">
+              <h4>{title} ({len(w['tickets'])} ve - {len(w['tickets'])*10}k)</h4>
               <div class="predset"><span class="setlabel">Pool</span> {balls_html(w['pool'])}</div>
               {wt}
-              <div class="meta">DAM BAO: neu ≥3 so trong pool 8 so xuat hien trong ket qua
-              → chac chan ≥1 ve trung Giai 3 (da kiem chung toan hoc)</div>
+              <div class="meta">{note}</div>
             </div>'''
 
         next_html += f'''<div class="card">
@@ -140,8 +145,10 @@ def render_static(state):
             badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/6</span>'
             sets_html += f'<div class="predset">{badge} {balls_html(s["numbers"], s.get("power"), hits=actual_set)}</div>'
         wheel_hist = ''
-        w = p.get('wheel')
-        if w and 'matched' in w:
+        for key, label in (('wheel', 'Wheel 8'), ('wheel12', 'Wheel 12')):
+            w = p.get(key)
+            if not (w and 'matched' in w):
+                continue
             g_ok = w.get('guarantee_ok', True)
             wt = ''
             for i, t in enumerate(w['tickets']):
@@ -149,8 +156,8 @@ def render_static(state):
                 badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/6</span>'
                 wt += f'<div class="predset">{badge} {balls_html(t, hits=actual_set)}</div>'
             g_badge = '' if g_ok else ' <span class="badge">LOI DAM BAO?!</span>'
-            wheel_hist = f'''<div class="wheel">
-              <h4>🎡 Wheel: pool trung {w['pool_hits']}/8 so{g_badge}</h4>
+            wheel_hist += f'''<div class="wheel">
+              <h4>🎡 {label}: pool trung {w['pool_hits']}/{len(w['pool'])} so{g_badge}</h4>
               {wt}
             </div>'''
         hist_by_game[p['game']] += f'''<div class="card">
