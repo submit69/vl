@@ -69,7 +69,14 @@ def build_state():
             m = s.get('matched', 0)
             match_dist[m] = match_dist.get(m, 0) + 1
 
+    try:
+        from budget import compute as budget_compute
+        budget_info = budget_compute(history)
+    except Exception:
+        budget_info = None
+
     return {
+        'budget': budget_info,
         'now': datetime.now(VN_TZ).strftime('%d/%m/%Y %H:%M'),
         'status': status,
         'next_preds': next_preds,
@@ -205,6 +212,38 @@ def render_static(state):
     dist_html = ' | '.join(f'{m} so: {c} bo' for m, c in sorted(st['match_dist'].items(), reverse=True))
     status_html = '<br>'.join(state['status']) if state['status'] else 'Data da moi nhat'
 
+    # ── Budget tracker panel ──
+    budget_html = ''
+    b = state.get('budget')
+    if b and b['total']['draws']:
+        t = b['total']
+        cfg = b['config']
+        rows = ''
+        for m in b['months']:
+            cls = ' style="color:#e74c3c;font-weight:600"' if m['over'] else ''
+            flag = ' ⚠ VUOT TRAN' if m['over'] else ''
+            rows += (f"<tr{cls}><td>{m['month']}</td><td>{m['cost_k']}k ({m['limit_pct']}%)</td>"
+                     f"<td>{m['prize_k']}k</td><td>{m['net_k']:+}k</td><td>{m['draws']} ky{flag}</td></tr>")
+        warn = ''
+        if t['yearly_k'] >= 5000:
+            warn = ('<div class="warn">⚠ Nhip nay ~%s k/nam. Neu con so nay lam ban giat minh, '
+                    'do la tin hieu nen giam xuong 1 ve/tuan.</div>' % f"{t['yearly_k']:,}")
+        budget_html = f'''
+<h2>💰 Budget Tracker</h2>
+<div class="card">
+  <div class="meta">Chien luoc theo doi: <b>{b['strategy_label']}</b> | Game: {', '.join(cfg['games'])}
+  | Tran thang: <b>{cfg['monthly_limit_k']}k</b> <span class="muted">(sua trong data/budget.json)</span></div>
+  <div class="predset" style="margin-top:10px">
+    <span class="bstat">Da chi<b>{t['cost_k']}k</b></span>
+    <span class="bstat">Thu ve<b>{t['prize_k']}k</b></span>
+    <span class="bstat">Net<b style="color:{'#27ae60' if t['net_k'] >= 0 else '#e74c3c'}">{t['net_k']:+}k</b></span>
+    <span class="bstat">ROI<b style="color:{'#27ae60' if t['roi_pct'] >= 0 else '#e74c3c'}">{t['roi_pct']:+}%</b></span>
+    <span class="bstat">Ve trung giai<b>{t['wins']}/{t['tickets']}</b></span>
+  </div>
+  <table style="margin-top:10px"><tr><th>Thang</th><th>Chi (% tran)</th><th>Thu</th><th>Net</th><th></th></tr>{rows}</table>
+  {warn}
+</div>'''
+
     return f'''<!DOCTYPE html>
 <html lang="vi"><head><meta charset="utf-8">
 <title>Vietlott Dashboard</title>
@@ -227,6 +266,10 @@ def render_static(state):
   .badge.good {{ background: #27ae60; }} .badge.ok {{ background: #e67e22; }}
   table {{ border-collapse: collapse; }} td {{ padding: 4px 10px; }}
   .warn {{ background: #3d2b18; border-left: 4px solid #e67e22; padding: 10px 14px; border-radius: 6px; margin: 14px 0; }}
+  .bstat {{ display: inline-block; background: #2a3550; border-radius: 8px; padding: 8px 16px;
+           margin: 4px 6px 4px 0; font-size: 13px; color: #8a94ad; }}
+  .bstat b {{ display: block; font-size: 19px; color: #e8eaf0; margin-top: 2px; }}
+  th {{ text-align: left; color: #8a94ad; font-weight: 600; font-size: 13px; padding: 4px 10px; }}
   .wheel {{ border-top: 1px dashed #2a3550; margin-top: 10px; padding-top: 8px; }}
   .wheel h4 {{ margin: 4px 0 8px; color: #7ecbff; }}
   .tabs {{ margin: 10px 0 4px; }}
@@ -254,6 +297,7 @@ function showTab(game, btn) {{
   <b>Trung Giai 3+ (3+/6 so): {st['wins']} bo</b><br>
   <span class="meta">{dist_html or 'Chua co du lieu doi chieu'}</span>
 </div>
+{budget_html}
 
 <h2>🆕 Ket qua moi nhat</h2>
 {latest_html}

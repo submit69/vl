@@ -20,6 +20,10 @@
   .badge.good { background: #27ae60; } .badge.ok { background: #e67e22; }
   table { border-collapse: collapse; } td { padding: 4px 10px; }
   .warn { background: #3d2b18; border-left: 4px solid #e67e22; padding: 10px 14px; border-radius: 6px; margin: 14px 0; }
+  .bstat { display: inline-block; background: #2a3550; border-radius: 8px; padding: 8px 16px;
+           margin: 4px 6px 4px 0; font-size: 13px; color: #8a94ad; }
+  .bstat b { display: block; font-size: 19px; color: #e8eaf0; margin-top: 2px; }
+  th { text-align: left; color: #8a94ad; font-weight: 600; font-size: 13px; padding: 4px 10px; }
   .wheel { border-top: 1px dashed #2a3550; margin-top: 10px; padding-top: 8px; }
   .wheel h4 { margin: 4px 0 8px; color: #7ecbff; }
   .tabs { margin: 10px 0 4px; }
@@ -37,7 +41,7 @@ function showTab(game, btn) {
 </script>
 </head><body>
 <h1>🎰 Vietlott Dashboard</h1>
-<div class="meta">Cap nhat tu dong: 03/08/2026 11:25 (gio VN) — Mega 6/45: +0 ky (mirror xoso.com.vn)<br>Power 6/55: +0 ky (mirror xoso.com.vn)</div>
+<div class="meta">Cap nhat tu dong: 03/08/2026 15:00 (gio VN) — Data da moi nhat</div>
 
 <h2>🎯 Du doan ky tiep theo</h2>
 <div class="card">
@@ -110,6 +114,21 @@ function showTab(game, btn) {
 <div class="card">
   <b>Trung Giai 3+ (3+/6 so): 1 bo</b><br>
   <span class="meta">3 so: 1 bo | 2 so: 8 bo | 1 so: 22 bo | 0 so: 32 bo</span>
+</div>
+
+<h2>💰 Budget Tracker</h2>
+<div class="card">
+  <div class="meta">Chien luoc theo doi: <b>3 bo thong ke (30k) + 1 ve anti-share (10k)</b> | Game: 645, 655
+  | Tran thang: <b>1100k</b> <span class="muted">(sua trong data/budget.json)</span></div>
+  <div class="predset" style="margin-top:10px">
+    <span class="bstat">Da chi<b>660k</b></span>
+    <span class="bstat">Thu ve<b>30k</b></span>
+    <span class="bstat">Net<b style="color:#e74c3c">-630k</b></span>
+    <span class="bstat">ROI<b style="color:#e74c3c">-95.5%</b></span>
+    <span class="bstat">Ve trung giai<b>1/66</b></span>
+  </div>
+  <table style="margin-top:10px"><tr><th>Thang</th><th>Chi (% tran)</th><th>Thu</th><th>Net</th><th></th></tr><tr><td>2026-07</td><td>660k (60.0%)</td><td>30k</td><td>-630k</td><td>21 ky</td></tr></table>
+  <div class="warn">⚠ Nhip nay ~7,920 k/nam. Neu con so nay lam ban giat minh, do la tin hieu nen giam xuong 1 ve/tuan.</div>
 </div>
 
 <h2>🆕 Ket qua moi nhat</h2>
