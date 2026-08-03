@@ -13,8 +13,16 @@ import json
 import csv
 import threading
 import webbrowser
-from datetime import datetime, date
+from datetime import datetime, date, timezone, timedelta
 from http.server import HTTPServer, BaseHTTPRequestHandler
+
+# Gio Viet Nam - QUAN TRONG: GitHub Actions runner chay UTC,
+# neu dung datetime.now() tran se lech -7h (vd 20:55 VN hien thanh 13:55)
+VN_TZ = timezone(timedelta(hours=7))
+
+
+def vn_now():
+    return datetime.now(VN_TZ)
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8')
@@ -32,7 +40,7 @@ GAME_NAMES = {'645': 'Mega 6/45', '655': 'Power 6/55'}
 
 
 def todays_games():
-    wd = date.today().weekday()
+    wd = vn_now().weekday()
     return [g for g, days in GAME_DAYS.items() if wd in days]
 
 
@@ -134,7 +142,7 @@ def predict_today(game):
         'game': game,
         'game_name': GAME_NAMES[game],
         'draw_id': next_id,
-        'predicted_at': datetime.now().strftime('%d/%m/%Y %H:%M'),
+        'predicted_at': vn_now().strftime('%d/%m/%Y %H:%M'),
         'sets': result['sets'],
         'wheel': result.get('wheel'),
         'wheel12': result.get('wheel12'),
@@ -189,8 +197,8 @@ def build_dashboard():
     wins = sum(c for m, c in match_dist.items() if m >= 3)
 
     return {
-        'now': datetime.now().strftime('%d/%m/%Y %H:%M'),
-        'weekday': ['Thu 2', 'Thu 3', 'Thu 4', 'Thu 5', 'Thu 6', 'Thu 7', 'Chu nhat'][date.today().weekday()],
+        'now': vn_now().strftime('%d/%m/%Y %H:%M'),
+        'weekday': ['Thu 2', 'Thu 3', 'Thu 4', 'Thu 5', 'Thu 6', 'Thu 7', 'Chu nhat'][vn_now().weekday()],
         'status': status,
         'today_games': [GAME_NAMES[g] for g in today_g],
         'today_preds': today_preds,
