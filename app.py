@@ -35,8 +35,10 @@ PRED_FILE = os.path.join(BASE_DIR, 'data', 'predictions.json')
 PORT = 8686
 
 # Mega 6/45: Wed(2), Fri(4), Sun(6) | Power 6/55: Tue(1), Thu(3), Sat(5)  (Mon=0)
-GAME_DAYS = {'645': {2, 4, 6}, '655': {1, 3, 5}}
-GAME_NAMES = {'645': 'Mega 6/45', '655': 'Power 6/55'}
+# 535 quay 2 lan/ngay (13h & 21h) -> tat ca cac ngay trong tuan
+GAME_DAYS = {'645': {2, 4, 6}, '655': {1, 3, 5}, '535': {0, 1, 2, 3, 4, 5, 6}}
+GAME_NAMES = {'645': 'Mega 6/45', '655': 'Power 6/55', '535': 'Lotto 5/35'}
+GAMES = ('645', '655', '535')
 
 
 def todays_games():
@@ -160,7 +162,7 @@ def predict_today(game):
 def build_dashboard():
     """Crawl, check history, predict today's games -> full state dict."""
     status = []
-    for game in ('645', '655'):
+    for game in GAMES:
         try:
             new = crawl_latest(game)
             if new:
@@ -179,7 +181,7 @@ def build_dashboard():
         history = load_predictions()
 
     latest = {}
-    for game in ('645', '655'):
+    for game in GAMES:
         data = load_data(game)
         latest[game] = [
             {'draw_id': e['draw_id'], 'date': e['date'], 'numbers': e['numbers'], 'power': e.get('power')}
@@ -248,7 +250,7 @@ def render_html(state):
         </div>'''
 
     latest_html = ''
-    for game in ('645', '655'):
+    for game in GAMES:
         rows = ''
         for e in state['latest'][game]:
             rows += f'''<tr><td>#{e['draw_id']}</td><td>{e['date']}</td>

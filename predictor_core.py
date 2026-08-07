@@ -5,10 +5,10 @@ Used by app.py dashboard and CLI tools.
 import numpy as np
 import math
 from collections import Counter, defaultdict
-from crawler import load_data
+from crawler import load_data, GAME_SPEC
 
 
-def comprehensive_score(data, max_num):
+def comprehensive_score(data, max_num, k=6):
     """Score each number using multiple time horizons + gap analysis."""
     n_total = len(data)
 
@@ -36,7 +36,7 @@ def comprehensive_score(data, max_num):
             last_seen[n] = i
     gaps = {n: n_total - 1 - last_seen.get(n, -1) for n in range(1, max_num + 1)}
 
-    expected_gap = max_num / 6
+    expected_gap = max_num / k
 
     scores = {}
     for n in range(1, max_num + 1):
@@ -74,10 +74,11 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
     if not data:
         return {'error': 'No data. Run crawler first.'}
 
-    max_num = 45 if game == '645' else 55
+    spec = GAME_SPEC[game]
+    max_num, K = spec['max'], spec['k']
     n_total = len(data)
 
-    scores, full_freq, recent_30, gaps = comprehensive_score(data, max_num)
+    scores, full_freq, recent_30, gaps = comprehensive_score(data, max_num, K)
     pairs = pair_strength(data, last_n=200)
 
     sums = [sum(e['numbers']) for e in data]
@@ -87,7 +88,7 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
     oe_dist = Counter()
     for e in data:
         odd = sum(1 for n in e['numbers'] if n % 2 == 1)
-        oe_dist[(odd, 6 - odd)] += 1
+        oe_dist[(odd, K - odd)] += 1
     target_oe = [oe for oe, c in oe_dist.most_common(3)]
 
     sorted_nums = sorted(scores.keys(), key=lambda n: -scores[n])
@@ -107,12 +108,13 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
             s = set()
             pool_top = list(top12)
             np.random.shuffle(pool_top)
-            for n in pool_top[:4]:
+            n_from_top = max(2, K - 2)
+            for n in pool_top[:n_from_top]:
                 s.add(n)
             extra_pool = sorted_nums[12:25]
             np.random.shuffle(extra_pool)
             for n in extra_pool:
-                if len(s) >= 6:
+                if len(s) >= K:
                     break
                 s.add(n)
             sets.append(sorted(s))
@@ -123,18 +125,18 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
             odd = sum(1 for n in s if n % 2 == 1)
             if not (sum_q25 <= sm <= sum_q75):
                 valid = False
-            if (odd, 6 - odd) not in target_oe:
+            if (odd, K - odd) not in target_oe:
                 valid = False
         if not valid:
             continue
 
-        if min(sum(1 for n in s if n in top12) for s in sets) < 4:
+        if min(sum(1 for n in s if n in top12) for s in sets) < max(2, K - 2):
             continue
 
         all_diff = True
         for i in range(len(sets)):
             for j in range(i + 1, len(sets)):
-                if len(set(sets[i]) & set(sets[j])) >= 5:
+                if len(set(sets[i]) & set(sets[j])) >= K - 1:
                     all_diff = False
                     break
         if not all_diff:
@@ -162,7 +164,8 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
 
     # Power suggestions (655 only)
     power_top = []
-    if game == '655':
+    if spec['bonus']:
+        bonus_max = spec.get('bonus_max', max_num)
         pw_full = Counter()
         pw_last = {}
         for i, e in enumerate(data):
@@ -170,7 +173,7 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
                 pw_full[e['power']] += 1
                 pw_last[e['power']] = i
         pw_score = {}
-        for n in range(1, max_num + 1):
+        for n in range(1, bonus_max + 1):
             pw_score[n] = (
                 pw_full.get(n, 0) / n_total * 100 * 4 +
                 ((n_total - 1 - pw_last.get(n, -1)) / 30) * 8
@@ -182,14 +185,15 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
     for i, s in enumerate(best_combo or []):
         result_sets.append({
             'numbers': s,
-            'power': power_top[i] if game == '655' and i < len(power_top) else None,
+            'power': power_top[i] if spec['bonus'] and i < len(power_top) else None,
             'sum': sum(s),
             'odd': sum(1 for n in s if n % 2 == 1),
-            'avg_score': round(sum(scores[n] for n in s) / 6, 1),
+            'avg_score': round(sum(scores[n] for n in s) / K, 1),
         })
 
-    total_comb = math.comb(max_num, 6)
-    p_any = sum(math.comb(6, k) * math.comb(max_num - 6, 6 - k) for k in range(3, 7)) / total_comb * 100
+    total_comb = math.comb(max_num, K)
+    p_any = sum(math.comb(K, k) * math.comb(max_num - K, K - k)
+                for k in range(3, K + 1)) / total_comb * 100
     p_n = (1 - (1 - p_any / 100) ** n_sets) * 100
 
     top15_detail = []
@@ -209,6 +213,8 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
     wheel = None
     wheel12 = None
     try:
+        if K != 6:
+            raise ValueError('wheel template chi cho game 6 so')
         from wheeling import apply_template, WHEEL_8_3IF3, WHEEL_12_3IF4
         pool8 = sorted(sorted_nums[:8])
         wheel = {'pool': pool8, 'tickets': apply_template(pool8, WHEEL_8_3IF3), 'guarantee': '3-if-3'}
@@ -222,10 +228,11 @@ def generate_predictions(game='655', n_sets=3, n_trials=8000):
     antishare = None
     try:
         from antishare import generate_antishare, antishare_power
-        a = generate_antishare(max_num)
+        a = generate_antishare(max_num, pick=K)
         antishare = {'numbers': a['numbers'], 'share_score': a['share_score']}
-        if game == '655':
-            antishare['power'] = antishare_power(max_num, exclude=a['numbers'])
+        if spec['bonus']:
+            antishare['power'] = antishare_power(
+                spec.get('bonus_max', max_num), exclude=a['numbers'])
     except Exception:
         pass
 

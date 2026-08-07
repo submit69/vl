@@ -64,7 +64,7 @@ def set_share_score(nums):
     return sum(popularity(n) for n in nums) + set_penalty(nums)
 
 
-def generate_antishare(max_num, n_candidates=8000, seed=None):
+def generate_antishare(max_num, pick=6, n_candidates=8000, seed=None):
     """
     Sinh bo 6 so toi thieu do pho bien (it nguoi cung danh nhat).
     Random search co trong so nghieng ve so cao/khong dep.
@@ -77,10 +77,10 @@ def generate_antishare(max_num, n_candidates=8000, seed=None):
     best = None
     best_score = float('inf')
     for _ in range(n_candidates):
-        pick = set()
-        while len(pick) < 6:
-            pick.add(rng.choices(numbers, weights=weights)[0])
-        nums = sorted(pick)
+        chosen = set()
+        while len(chosen) < pick:
+            chosen.add(rng.choices(numbers, weights=weights)[0])
+        nums = sorted(chosen)
         score = set_share_score(nums)
         if score < best_score:
             best_score = score
@@ -94,9 +94,14 @@ def generate_antishare(max_num, n_candidates=8000, seed=None):
 
 
 def antishare_power(max_num, exclude=(), seed=None):
-    """Chon so Power it nguoi danh (cho 655)."""
+    """
+    Chon so phu (Power 1-55 cua 655 / so dac biet 1-12 cua 535) it nguoi danh.
+    Uu tien nua tren cua dai so (khong phai ngay sinh) va tranh so 'dep'.
+    """
     rng = random.Random(seed)
-    cands = [n for n in range(32, max_num + 1) if n not in VN_LUCKY and n not in exclude]
+    lo = max_num // 2 + 1          # 655 -> tu 28; 535 (1-12) -> tu 7
+    cands = [n for n in range(lo, max_num + 1)
+             if n not in VN_LUCKY and n not in exclude]
     if not cands:
         cands = [n for n in range(1, max_num + 1) if n not in exclude]
     return rng.choice(cands)

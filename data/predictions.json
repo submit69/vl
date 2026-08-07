@@ -3558,5 +3558,91 @@
   ],
   "win_prob_pct": 3.95,
   "actual": null
+ },
+ {
+  "game": "535",
+  "game_name": "Lotto 5/35",
+  "draw_id": "00810",
+  "predicted_at": "07/08/2026 14:07",
+  "sets": [
+   {
+    "numbers": [
+     10,
+     15,
+     18,
+     19,
+     29
+    ],
+    "power": 11,
+    "sum": 91,
+    "odd": 3,
+    "avg_score": 166.5
+   },
+   {
+    "numbers": [
+     6,
+     20,
+     21,
+     23,
+     34
+    ],
+    "power": 1,
+    "sum": 104,
+    "odd": 2,
+    "avg_score": 169.7
+   },
+   {
+    "numbers": [
+     9,
+     13,
+     18,
+     27,
+     33
+    ],
+    "power": 9,
+    "sum": 100,
+    "odd": 4,
+    "avg_score": 168.1
+   }
+  ],
+  "wheel": null,
+  "wheel12": null,
+  "antishare": {
+   "numbers": [
+    13,
+    15,
+    21,
+    32,
+    35
+   ],
+   "share_score": 6.25,
+   "power": 10
+  },
+  "power_top": [
+   11,
+   1,
+   9,
+   12,
+   3
+  ],
+  "top15": [
+   11,
+   15,
+   34,
+   21,
+   9,
+   33,
+   13,
+   10,
+   28,
+   2,
+   23,
+   19,
+   12,
+   18,
+   20
+  ],
+  "win_prob_pct": 4.1,
+  "actual": null
  }
 ]

@@ -26,6 +26,15 @@ RENDER_URL = f"{BASE_URL}/Vietlott.Utility.WebEnvironments,Vietlott.Utility.ashx
 GAME_URLS = {
     "645": f"{BASE_URL}/Vietlott.PlugIn.WebParts.Game645ResultDetailWebPart,Vietlott.PlugIn.WebParts.ashx",
     "655": f"{BASE_URL}/Vietlott.PlugIn.WebParts.Game655ResultDetailWebPart,Vietlott.PlugIn.WebParts.ashx",
+    "535": f"{BASE_URL}/Vietlott.PlugIn.WebParts.Game535ResultDetailWebPart,Vietlott.PlugIn.WebParts.ashx",
+}
+
+# Cau hinh tung game: so luong so chinh (K), dai so (N), co so phu khong
+GAME_SPEC = {
+    "645": {"name": "Mega 6/45",  "k": 6, "max": 45, "bonus": None},
+    "655": {"name": "Power 6/55", "k": 6, "max": 55, "bonus": "power"},
+    # 5/35: 5 so tu 1-35 + 1 so dac biet tu 1-12, quay 2 lan/ngay (13h & 21h)
+    "535": {"name": "Lotto 5/35", "k": 5, "max": 35, "bonus": "special", "bonus_max": 12},
 }
 HEADERS = {
     "Content-Type": "text/plain; charset=utf-8",
@@ -77,14 +86,13 @@ def fetch_draw(game: str, draw_id: str, render_info: dict) -> dict | None:
     if not numbers:
         return None
 
-    if game == "645":
-        # Mega 6/45: 6 numbers
-        main_numbers = numbers[:6]
-        power_number = ""
-    else:
-        # Power 6/55: 6 main + 1 power number
-        main_numbers = numbers[:6]
-        power_number = numbers[6] if len(numbers) > 6 else ""
+    spec = GAME_SPEC[game]
+    k = spec["k"]
+    main_numbers = numbers[:k]
+    if len(main_numbers) != k:
+        return None
+    # So phu (Power cua 655 / so dac biet cua 535) nam ngay sau cac so chinh
+    power_number = numbers[k] if (spec["bonus"] and len(numbers) > k) else ""
 
     return {
         "date": date_str,
@@ -117,8 +125,9 @@ def save_results(game: str, results: list[dict]):
     path = get_csv_path(game)
     file_exists = os.path.exists(path)
 
-    fieldnames = ["date", "draw_id", "n1", "n2", "n3", "n4", "n5", "n6"]
-    if game == "655":
+    spec = GAME_SPEC[game]
+    fieldnames = ["date", "draw_id"] + [f"n{i+1}" for i in range(spec["k"])]
+    if spec["bonus"]:
         fieldnames.append("power")
 
     with open(path, "a", newline="", encoding="utf-8") as f:
@@ -132,7 +141,7 @@ def save_results(game: str, results: list[dict]):
             }
             for i, n in enumerate(r["numbers"]):
                 row[f"n{i+1}"] = n
-            if game == "655":
+            if spec["bonus"]:
                 row["power"] = r["power_number"]
             writer.writerow(row)
 
@@ -144,24 +153,22 @@ def crawl(game: str = "645", max_draws: int = 0, delay: float = 0.3):
     max_draws: 0 = crawl all, >0 = crawl up to N draws
     delay: seconds between requests
     """
-    print(f"[Crawler] Starting crawl for {'Mega 6/45' if game == '645' else 'Power 6/55'}...")
+    print(f"[Crawler] Starting crawl for {GAME_SPEC[game]['name']}...")
 
     ri = get_render_info()
     existing = load_existing(game)
     print(f"[Crawler] Already have {len(existing)} draws in database")
 
-    # Find latest draw ID by trying recent ones
+    # Find latest draw ID by trying recent ones.
+    # Bat dau do tu (ky lon nhat da co + bien do) de khong phai doan cung.
     latest_id = None
-    if game == "645":
-        # Mega 6/45 started ~2016, currently at ~01490
-        start_probe = 1500
-    else:
-        # Power 6/55 started ~2017, currently at ~01326
-        start_probe = 1350
+    have_max = max((int(x) for x in existing), default=0)
+    default_probe = {"645": 1560, "655": 1400, "535": 900}.get(game, 1500)
+    start_probe = max(have_max + 60, default_probe)
 
     # Probe to find the latest valid draw
     print("[Crawler] Finding latest draw...")
-    for probe in range(start_probe, start_probe - 50, -1):
+    for probe in range(start_probe, max(0, start_probe - 120), -1):
         draw_id = f"{probe:05d}"
         result = fetch_draw(game, draw_id, ri)
         if result:
@@ -228,6 +235,7 @@ def load_data(game: str = "645") -> list[dict]:
     if not os.path.exists(path):
         return []
 
+    spec = GAME_SPEC[game]
     rows = []
     seen_ids = set()
     with open(path, "r", encoding="utf-8") as f:
@@ -236,13 +244,13 @@ def load_data(game: str = "645") -> list[dict]:
             if row["draw_id"] in seen_ids:
                 continue  # chong trung lap
             seen_ids.add(row["draw_id"])
-            numbers = [int(row[f"n{i}"]) for i in range(1, 7)]
+            numbers = [int(row[f"n{i}"]) for i in range(1, spec["k"] + 1)]
             entry = {
                 "date": row["date"],
                 "draw_id": row["draw_id"],
                 "numbers": sorted(numbers),
             }
-            if game == "655" and "power" in row:
+            if spec["bonus"] and row.get("power"):
                 entry["power"] = int(row["power"])
             rows.append(entry)
 

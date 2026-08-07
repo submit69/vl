@@ -13,7 +13,8 @@ if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8')
 
 from crawler import load_data
-from app import crawl_latest, check_history, predict_today, load_predictions, GAME_NAMES, balls_html
+from app import (crawl_latest, check_history, predict_today, load_predictions,
+                 GAME_NAMES, GAMES, balls_html)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_DIR = os.path.join(BASE_DIR, 'public')
@@ -23,7 +24,7 @@ VN_TZ = timezone(timedelta(hours=7))
 
 def build_state():
     status = []
-    for game in ('645', '655'):
+    for game in GAMES:
         try:
             new = crawl_latest(game)
             if new:
@@ -47,7 +48,7 @@ def build_state():
 
     # Predict NEXT draw for both games (regardless of weekday)
     next_preds = []
-    for g in ('645', '655'):
+    for g in GAMES:
         p = predict_today(g)
         if p:
             next_preds.append(p)
@@ -55,7 +56,7 @@ def build_state():
     history = load_predictions()
 
     latest = {}
-    for game in ('645', '655'):
+    for game in GAMES:
         data = load_data(game)
         latest[game] = [
             {'draw_id': e['draw_id'], 'date': e['date'], 'numbers': e['numbers'], 'power': e.get('power')}
@@ -100,7 +101,7 @@ def render_static(state):
             sets_html += f'''<div class="predset">
               <span class="setlabel">Bo {i+1}</span>
               {balls_html(s['numbers'], s.get('power'))}
-              <span class="meta">T={s['sum']} | {s['odd']}L/{6-s['odd']}C</span>
+              <span class="meta">T={s['sum']} | {s['odd']}L/{len(s['numbers'])-s['odd']}C</span>
             </div>'''
         power_html = ''
         if p['power_top']:
@@ -128,7 +129,10 @@ def render_static(state):
         anti_html = ''
         a = p.get('antishare')
         if a:
-            if p['game'] == '645':
+            if p['game'] == '535':
+                evidence = ('Lotto 5/35 moi ra 06/2025 nen chua co du lieu winner de kiem chung '
+                            'hieu ung chia giai. Bo nay van ne ngay sinh / so phong thuy theo mo hinh chung.')
+            elif p['game'] == '645':
                 evidence = ('Kiem chung TOAN BO 1,542 ky: ky ra nhieu so pho bien co +16% nguoi trung, '
                             'va hieu ung DANG MANH LEN (3 nam gan nhat: +18%). Vi du ky 05-08-09-11-20-29 '
                             'co 72,470 nguoi trung G3 vs 13,945 cua ky toan so cao - chenh 5.2 lan.')
@@ -151,7 +155,7 @@ def render_static(state):
         </div>'''
 
     latest_html = ''
-    for game in ('645', '655'):
+    for game in GAMES:
         rows = ''
         for e in state['latest'][game]:
             rows += f'''<tr><td>#{e['draw_id']}</td><td>{e['date']}</td>
@@ -162,13 +166,14 @@ def render_static(state):
         </div>'''
 
     # Lich su tach theo game -> 2 tab
-    hist_by_game = {'645': '', '655': ''}
+    hist_by_game = {g: '' for g in GAMES}
     for p in state['history']:
         actual_set = set(p['actual'])
         sets_html = ''
         for s in p['sets']:
             m = s.get('matched', 0)
-            badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/6</span>'
+            k = len(s['numbers'])
+            badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/{k}</span>'
             sets_html += f'<div class="predset">{badge} {balls_html(s["numbers"], s.get("power"), hits=actual_set)}</div>'
         wheel_hist = ''
         for key, label in (('wheel', 'Wheel 8'), ('wheel12', 'Wheel 12')):
@@ -190,7 +195,8 @@ def render_static(state):
         a = p.get('antishare')
         if a and 'matched' in a:
             m = a['matched']
-            badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/6</span>'
+            k = len(a['numbers'])
+            badge = f'<span class="badge {"good" if m >= 3 else ("ok" if m == 2 else "")}">{m}/{k}</span>'
             anti_hist = f'<div class="predset">{badge} 💎 {balls_html(a["numbers"], a.get("power"), hits=actual_set)}</div>'
         hist_by_game[p['game']] += f'''<div class="card">
           <h3>{p['game_name']} #{p['draw_id']} <span class="meta">du doan {p['predicted_at']}</span></h3>
@@ -201,12 +207,15 @@ def render_static(state):
         if not hist_by_game[g]:
             hist_by_game[g] = '<p class="muted">Chua co lich su doi chieu.</p>'
 
-    hist_html = f'''<div class="tabs">
-      <button class="tab-btn active" onclick="showTab('645', this)">Mega 6/45</button>
-      <button class="tab-btn" onclick="showTab('655', this)">Power 6/55</button>
-    </div>
-    <div id="tab-645" class="tab-content">{hist_by_game['645']}</div>
-    <div id="tab-655" class="tab-content" style="display:none">{hist_by_game['655']}</div>'''
+    btns, panes = '', ''
+    for i, g in enumerate(GAMES):
+        active = ' active' if i == 0 else ''
+        hidden = '' if i == 0 else ' style="display:none"'
+        btns += ('<button class="tab-btn' + active + '" '
+                 "onclick=\"showTab('" + g + "', this)\">" + GAME_NAMES[g] + '</button>')
+        panes += ('<div id="tab-' + g + '" class="tab-content"' + hidden + '>'
+                  + hist_by_game[g] + '</div>')
+    hist_html = '<div class="tabs">' + btns + '</div>' + panes
 
     st = state['stats']
     dist_html = ' | '.join(f'{m} so: {c} bo' for m, c in sorted(st['match_dist'].items(), reverse=True))
@@ -279,8 +288,9 @@ def render_static(state):
 </style>
 <script>
 function showTab(game, btn) {{
-  document.getElementById('tab-645').style.display = game === '645' ? '' : 'none';
-  document.getElementById('tab-655').style.display = game === '655' ? '' : 'none';
+  document.querySelectorAll('.tab-content').forEach(el => {{
+    el.style.display = (el.id === 'tab-' + game) ? '' : 'none';
+  }});
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }}
