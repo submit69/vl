@@ -1,11 +1,10 @@
 {
- "monthly_limit_k": 1100,
+ "monthly_limit_k": 550,
  "strategy": [
   "sets",
   "antishare"
  ],
  "games": [
-  "645",
-  "655"
+  "645"
  ]
 }
