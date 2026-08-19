@@ -6385,7 +6385,8 @@
     "power": 3,
     "sum": 97,
     "odd": 3,
-    "avg_score": 167.8
+    "avg_score": 167.8,
+    "matched": 0
    },
    {
     "numbers": [
@@ -6398,7 +6399,8 @@
     "power": 12,
     "sum": 106,
     "odd": 2,
-    "avg_score": 168.6
+    "avg_score": 168.6,
+    "matched": 0
    },
    {
     "numbers": [
@@ -6411,7 +6413,8 @@
     "power": 8,
     "sum": 91,
     "odd": 3,
-    "avg_score": 176.3
+    "avg_score": 176.3,
+    "matched": 1
    }
   ],
   "wheel": null,
@@ -6425,7 +6428,8 @@
     35
    ],
    "share_score": 6.25,
-   "power": 12
+   "power": 12,
+   "matched": 2
   },
   "power_top": [
    3,
@@ -6450,6 +6454,100 @@
    15,
    28,
    35
+  ],
+  "win_prob_pct": 4.1,
+  "actual": [
+   5,
+   10,
+   25,
+   26,
+   35
+  ],
+  "actual_power": 5,
+  "best_matched": 1
+ },
+ {
+  "game": "535",
+  "game_name": "Lotto 5/35",
+  "draw_id": "00833",
+  "predicted_at": "19/08/2026 09:14",
+  "sets": [
+   {
+    "numbers": [
+     7,
+     13,
+     15,
+     17,
+     34
+    ],
+    "power": 3,
+    "sum": 86,
+    "odd": 4,
+    "avg_score": 171.5
+   },
+   {
+    "numbers": [
+     15,
+     19,
+     20,
+     21,
+     28
+    ],
+    "power": 12,
+    "sum": 103,
+    "odd": 3,
+    "avg_score": 167.3
+   },
+   {
+    "numbers": [
+     3,
+     6,
+     22,
+     25,
+     33
+    ],
+    "power": 8,
+    "sum": 89,
+    "odd": 3,
+    "avg_score": 178.4
+   }
+  ],
+  "wheel": null,
+  "wheel12": null,
+  "antishare": {
+   "numbers": [
+    14,
+    25,
+    30,
+    32,
+    35
+   ],
+   "share_score": 6.25,
+   "power": 11
+  },
+  "power_top": [
+   3,
+   12,
+   8,
+   10,
+   1
+  ],
+  "top15": [
+   3,
+   33,
+   13,
+   9,
+   22,
+   19,
+   34,
+   35,
+   21,
+   7,
+   10,
+   20,
+   17,
+   23,
+   15
   ],
   "win_prob_pct": 4.1,
   "actual": null
