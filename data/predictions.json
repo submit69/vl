@@ -7760,7 +7760,8 @@
     "power": null,
     "sum": 137,
     "odd": 3,
-    "avg_score": 161.6
+    "avg_score": 161.6,
+    "matched": 1
    },
    {
     "numbers": [
@@ -7774,7 +7775,8 @@
     "power": null,
     "sum": 129,
     "odd": 3,
-    "avg_score": 165.9
+    "avg_score": 165.9,
+    "matched": 1
    },
    {
     "numbers": [
@@ -7788,7 +7790,8 @@
     "power": null,
     "sum": 120,
     "odd": 4,
-    "avg_score": 167.1
+    "avg_score": 167.1,
+    "matched": 1
    }
   ],
   "wheel": {
@@ -7836,7 +7839,16 @@
      45
     ]
    ],
-   "guarantee": "3-if-3"
+   "guarantee": "3-if-3",
+   "pool_hits": 1,
+   "matched": [
+    1,
+    0,
+    1,
+    1
+   ],
+   "best_matched": 1,
+   "guarantee_ok": true
   },
   "wheel12": {
    "pool": [
@@ -7919,7 +7931,20 @@
      44
     ]
    ],
-   "guarantee": "3-if-4"
+   "guarantee": "3-if-4",
+   "pool_hits": 1,
+   "matched": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0
+   ],
+   "best_matched": 1,
+   "guarantee_ok": true
   },
   "antishare": {
    "numbers": [
@@ -7930,7 +7955,8 @@
     42,
     44
    ],
-   "share_score": 5.75
+   "share_score": 5.75,
+   "matched": 1
   },
   "power_top": [],
   "top15": [
@@ -7951,7 +7977,16 @@
    39
   ],
   "win_prob_pct": 6.98,
-  "actual": null
+  "actual": [
+   3,
+   10,
+   11,
+   16,
+   33,
+   40
+  ],
+  "actual_power": null,
+  "best_matched": 1
  },
  {
   "game": "655",
@@ -8353,6 +8388,217 @@
    26
   ],
   "win_prob_pct": 4.1,
+  "actual": null
+ },
+ {
+  "game": "645",
+  "game_name": "Mega 6/45",
+  "draw_id": "01555",
+  "predicted_at": "26/08/2026 20:16",
+  "sets": [
+   {
+    "numbers": [
+     3,
+     7,
+     16,
+     36,
+     41,
+     45
+    ],
+    "power": null,
+    "sum": 148,
+    "odd": 4,
+    "avg_score": 166.9
+   },
+   {
+    "numbers": [
+     2,
+     11,
+     20,
+     31,
+     33,
+     43
+    ],
+    "power": null,
+    "sum": 140,
+    "odd": 4,
+    "avg_score": 168.3
+   },
+   {
+    "numbers": [
+     6,
+     15,
+     16,
+     19,
+     40,
+     44
+    ],
+    "power": null,
+    "sum": 140,
+    "odd": 2,
+    "avg_score": 168.7
+   }
+  ],
+  "wheel": {
+   "pool": [
+    6,
+    16,
+    17,
+    31,
+    33,
+    36,
+    43,
+    45
+   ],
+   "tickets": [
+    [
+     6,
+     17,
+     31,
+     36,
+     43,
+     45
+    ],
+    [
+     6,
+     16,
+     31,
+     33,
+     36,
+     43
+    ],
+    [
+     16,
+     17,
+     33,
+     36,
+     43,
+     45
+    ],
+    [
+     6,
+     16,
+     17,
+     31,
+     33,
+     45
+    ]
+   ],
+   "guarantee": "3-if-3"
+  },
+  "wheel12": {
+   "pool": [
+    6,
+    7,
+    11,
+    16,
+    17,
+    19,
+    31,
+    33,
+    36,
+    43,
+    44,
+    45
+   ],
+   "tickets": [
+    [
+     6,
+     17,
+     19,
+     36,
+     44,
+     45
+    ],
+    [
+     6,
+     7,
+     11,
+     16,
+     31,
+     33
+    ],
+    [
+     7,
+     16,
+     17,
+     33,
+     43,
+     45
+    ],
+    [
+     11,
+     19,
+     31,
+     36,
+     43,
+     44
+    ],
+    [
+     11,
+     17,
+     19,
+     31,
+     36,
+     45
+    ],
+    [
+     7,
+     16,
+     17,
+     33,
+     44,
+     45
+    ],
+    [
+     6,
+     7,
+     16,
+     19,
+     33,
+     43
+    ],
+    [
+     6,
+     11,
+     19,
+     31,
+     43,
+     44
+    ]
+   ],
+   "guarantee": "3-if-4"
+  },
+  "antishare": {
+   "numbers": [
+    32,
+    35,
+    37,
+    40,
+    42,
+    44
+   ],
+   "share_score": 5.75
+  },
+  "power_top": [],
+  "top15": [
+   31,
+   6,
+   16,
+   17,
+   43,
+   36,
+   33,
+   45,
+   7,
+   44,
+   11,
+   19,
+   2,
+   22,
+   35
+  ],
+  "win_prob_pct": 6.98,
   "actual": null
  }
 ]
