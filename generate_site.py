@@ -76,7 +76,22 @@ def build_state():
     except Exception:
         budget_info = None
 
+    # EV theo jackpot hien tai (loi mang thi bo qua, site van build)
+    ev_info = []
+    try:
+        from ev import fetch_jackpots, compute_ev, break_even_jackpot, estimate_tickets_sold
+        jps = fetch_jackpots()
+        for g, jackpots in jps.items():
+            tickets, _src = estimate_tickets_sold(g)
+            r = compute_ev(g, jackpots, tickets)
+            r['jackpots'] = jackpots
+            r['break_even'] = break_even_jackpot(g, tickets)
+            ev_info.append(r)
+    except Exception:
+        ev_info = []
+
     return {
+        'ev': ev_info,
         'budget': budget_info,
         'now': datetime.now(VN_TZ).strftime('%d/%m/%Y %H:%M'),
         'status': status,
@@ -221,6 +236,35 @@ def render_static(state):
     dist_html = ' | '.join(f'{m} so: {c} bo' for m, c in sorted(st['match_dist'].items(), reverse=True))
     status_html = '<br>'.join(state['status']) if state['status'] else 'Data da moi nhat'
 
+    # ── EV panel: jackpot hom nay dang choi den dau ──
+    ev_html = ''
+    if state.get('ev'):
+        cards = ''
+        for r in state['ev']:
+            jp_lines = ''
+            from ev import GAME_SPEC, fmt_b
+            for (jname, _), jp in zip(GAME_SPEC[r['game']]['jackpots'], r['jackpots']):
+                jp_lines += f'<div class="meta">{jname}: <b style="color:#f5c542">{fmt_b(jp)}</b></div>'
+            pct_be = min(100, r['jackpots'][0] / r['break_even'] * 100)
+            cards += f'''<div class="card half">
+              <h3>{r['game_name']}</h3>
+              {jp_lines}
+              <div class="meta" style="margin-top:6px">
+                EV moi ve 10k: <b>{r['ev_total']:,.0f} d</b> → ky vong lo <b style="color:#e74c3c">{r['loss_pct']:.0f}%</b><br>
+                Jackpot hoa von (EV = gia ve): <b>{fmt_b(r['break_even'])}</b>
+              </div>
+              <div style="background:#2a3550;border-radius:6px;height:10px;margin-top:8px">
+                <div style="background:{'#27ae60' if pct_be >= 100 else '#e67e22' if pct_be >= 60 else '#c0392b'};width:{pct_be:.0f}%;height:10px;border-radius:6px"></div>
+              </div>
+              <div class="meta">Jackpot hien tai = {r['jackpots'][0] / r['break_even'] * 100:.0f}% muc hoa von
+              (uoc {r['tickets_sold_est']:,} ve/ky tu du lieu winner)</div>
+            </div>'''
+        ev_html = f'''
+<h2>💡 Hom nay dang choi den dau? (EV theo jackpot)</h2>
+{cards}
+<div class="meta" style="margin:4px 0 0">Xac suat trung KHONG doi theo jackpot — chi ky vong TIEN doi.
+Thanh cang day/xanh thi cang "do lo" hon, khong co nghia la "choi la lai".</div>'''
+
     # ── Budget tracker panel ──
     budget_html = ''
     b = state.get('budget')
@@ -298,6 +342,8 @@ function showTab(game, btn) {{
 </head><body>
 <h1>🎰 Vietlott Dashboard</h1>
 <div class="meta">Cap nhat tu dong: {state['now']} (gio VN) — {status_html}</div>
+
+{ev_html}
 
 <h2>🎯 Du doan ky tiep theo</h2>
 {next_html or '<p class="muted">Chua co du doan.</p>'}

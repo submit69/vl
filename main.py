@@ -44,6 +44,10 @@ Cac lenh:
                                           frequency, pattern
                               So bo: so luong bo so muon tao
 
+  ev                          Jackpot hien tai & ky vong tien (EV) moi ve
+                              - Crawl jackpot dang tich luy tu vietlott.vn
+                              - Tinh EV sau thue + chia giai, muc jackpot hoa von
+
   info [645|655]              Hien thi thong tin du lieu da crawl
 
 Vi du:
@@ -104,6 +108,10 @@ def main():
         strategy = sys.argv[3] if len(sys.argv) > 3 else "all"
         num_sets = int(sys.argv[4]) if len(sys.argv) > 4 else 5
         print_predictions(game, num_sets, strategy)
+
+    elif cmd == "ev":
+        from ev import print_report as ev_report
+        ev_report()
 
     elif cmd == "info":
         cmd_info(game)
