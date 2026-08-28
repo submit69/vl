@@ -1,0 +1,9 @@
+// Cloudflare Worker "vl" - chi serve static assets tu public/
+{
+  "name": "vl",
+  "account_id": "63b3668d2c6df8225c8c2ff8349efdbd",
+  "compatibility_date": "2026-08-29",
+  "assets": {
+    "directory": "./public"
+  }
+}
