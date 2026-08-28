@@ -25,6 +25,8 @@ jobs:
       - name: Crawl + predict + generate site
         run: python generate_site.py
 
+      # Push xong la Cloudflare Workers Builds (da connect git) tu build + deploy,
+      # khong can deploy tu Actions nua.
       - name: Commit & push updates
         run: |
           git config user.name "vietlott-bot"
@@ -32,8 +34,3 @@ jobs:
           git add data public
           git diff --cached --quiet && echo "No changes" || git commit -m "auto-update $(date -u +%F_%H:%M)"
           git push
-
-      - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
