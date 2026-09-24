@@ -26,6 +26,16 @@ DATASET_URLS = {
         'https://raw.githubusercontent.com/vietvudanh/vietlott-data/master/data/power655.jsonl',
         'https://cdn.jsdelivr.net/gh/vietvudanh/vietlott-data@master/data/power655.jsonl',
     ],
+    '535': [
+        'https://raw.githubusercontent.com/vietvudanh/vietlott-data/master/data/power535.jsonl',
+        'https://cdn.jsdelivr.net/gh/vietvudanh/vietlott-data@master/data/power535.jsonl',
+    ],
+}
+# k = so luong so chinh; power = co so phu (Power/so dac biet) ngay sau trong result[]
+GAME_META = {
+    '645': {'k': 6, 'power': False},
+    '655': {'k': 6, 'power': True},
+    '535': {'k': 5, 'power': True},
 }
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
@@ -59,6 +69,8 @@ def sync_from_public_dataset(game):
     if resp is None:
         raise last_err
 
+    meta = GAME_META[game]
+    k = meta['k']
     existing = _existing_ids(game)
     new_rows = []
 
@@ -71,7 +83,7 @@ def sync_from_public_dataset(game):
         if not draw_id or draw_id in existing:
             continue
         result = rec.get('result') or []
-        if len(result) < 6:
+        if len(result) < k:
             continue
         # date: YYYY-MM-DD -> dd/mm/yyyy
         try:
@@ -79,10 +91,10 @@ def sync_from_public_dataset(game):
         except (KeyError, ValueError):
             continue
         row = {'date': d, 'draw_id': draw_id}
-        for i in range(6):
+        for i in range(k):
             row[f'n{i+1}'] = f'{int(result[i]):02d}'
-        if game == '655':
-            row['power'] = f'{int(result[6]):02d}' if len(result) > 6 else ''
+        if meta['power']:
+            row['power'] = f'{int(result[k]):02d}' if len(result) > k else ''
         new_rows.append(row)
 
     if not new_rows:
@@ -90,8 +102,8 @@ def sync_from_public_dataset(game):
 
     path = _csv_path(game)
     file_exists = os.path.exists(path)
-    fieldnames = ['date', 'draw_id', 'n1', 'n2', 'n3', 'n4', 'n5', 'n6']
-    if game == '655':
+    fieldnames = ['date', 'draw_id'] + [f'n{i+1}' for i in range(k)]
+    if meta['power']:
         fieldnames.append('power')
 
     os.makedirs(DATA_DIR, exist_ok=True)
@@ -110,7 +122,7 @@ if __name__ == '__main__':
     import sys
     if sys.platform == 'win32':
         sys.stdout.reconfigure(encoding='utf-8')
-    for g in ('645', '655'):
+    for g in ('645', '655', '535'):
         try:
             n = sync_from_public_dataset(g)
             print(f'{g}: +{n} ky tu dataset cong khai')
