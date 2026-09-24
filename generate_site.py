@@ -98,7 +98,11 @@ def build_state():
         'next_preds': next_preds,
         'pending': [p for p in history if not p.get('actual')],
         'latest': latest,
-        'history': sorted(scored, key=lambda p: p['draw_id'], reverse=True)[:30],
+        # Top 30 THEO TUNG GAME (draw_id cac game khac day so nhau,
+        # cat chung 30 ky se bi game co draw_id lon nhat chiem het)
+        'history': [p for g in GAMES for p in sorted(
+            (q for q in scored if q['game'] == g),
+            key=lambda p: p['draw_id'], reverse=True)[:30]],
         'stats': {
             'total_predictions': len(scored),
             'total_sets': sum(len(p['sets']) for p in scored),
