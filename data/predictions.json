@@ -15404,7 +15404,8 @@
     "power": 12,
     "sum": 101,
     "odd": 3,
-    "avg_score": 162.2
+    "avg_score": 162.2,
+    "matched": 0
    },
    {
     "numbers": [
@@ -15417,7 +15418,8 @@
     "power": 9,
     "sum": 100,
     "odd": 4,
-    "avg_score": 160.0
+    "avg_score": 160.0,
+    "matched": 1
    },
    {
     "numbers": [
@@ -15430,7 +15432,8 @@
     "power": 7,
     "sum": 106,
     "odd": 2,
-    "avg_score": 162.6
+    "avg_score": 162.6,
+    "matched": 0
    }
   ],
   "wheel": null,
@@ -15444,7 +15447,8 @@
     35
    ],
    "share_score": 6.25,
-   "power": 11
+   "power": 11,
+   "matched": 2
   },
   "power_top": [
    12,
@@ -15471,7 +15475,15 @@
    35
   ],
   "win_prob_pct": 4.1,
-  "actual": null
+  "actual": [
+   7,
+   10,
+   14,
+   17,
+   35
+  ],
+  "actual_power": 11,
+  "best_matched": 1
  },
  {
   "game": "655",
@@ -15689,6 +15701,92 @@
    23
   ],
   "win_prob_pct": 3.95,
+  "actual": null
+ },
+ {
+  "game": "535",
+  "game_name": "Lotto 5/35",
+  "draw_id": "00911",
+  "predicted_at": "27/09/2026 13:03",
+  "sets": [
+   {
+    "numbers": [
+     6,
+     11,
+     20,
+     23,
+     30
+    ],
+    "power": 12,
+    "sum": 90,
+    "odd": 2,
+    "avg_score": 180.6
+   },
+   {
+    "numbers": [
+     13,
+     16,
+     19,
+     25,
+     27
+    ],
+    "power": 9,
+    "sum": 100,
+    "odd": 4,
+    "avg_score": 160.9
+   },
+   {
+    "numbers": [
+     3,
+     7,
+     8,
+     28,
+     31
+    ],
+    "power": 7,
+    "sum": 77,
+    "odd": 3,
+    "avg_score": 157.1
+   }
+  ],
+  "wheel": null,
+  "wheel12": null,
+  "antishare": {
+   "numbers": [
+    13,
+    20,
+    25,
+    33,
+    35
+   ],
+   "share_score": 6.25,
+   "power": 10
+  },
+  "power_top": [
+   12,
+   9,
+   7,
+   3,
+   10
+  ],
+  "top15": [
+   30,
+   10,
+   20,
+   27,
+   8,
+   11,
+   19,
+   34,
+   7,
+   22,
+   13,
+   31,
+   15,
+   25,
+   35
+  ],
+  "win_prob_pct": 4.1,
   "actual": null
  }
 ]
