@@ -16138,7 +16138,8 @@
     "power": 12,
     "sum": 92,
     "odd": 2,
-    "avg_score": 173.3
+    "avg_score": 173.3,
+    "matched": 1
    },
    {
     "numbers": [
@@ -16151,7 +16152,8 @@
     "power": 9,
     "sum": 91,
     "odd": 3,
-    "avg_score": 168.3
+    "avg_score": 168.3,
+    "matched": 2
    },
    {
     "numbers": [
@@ -16164,7 +16166,8 @@
     "power": 7,
     "sum": 86,
     "odd": 2,
-    "avg_score": 164.2
+    "avg_score": 164.2,
+    "matched": 1
    }
   ],
   "wheel": null,
@@ -16178,7 +16181,8 @@
     35
    ],
    "share_score": 6.25,
-   "power": 7
+   "power": 7,
+   "matched": 1
   },
   "power_top": [
    12,
@@ -16205,7 +16209,15 @@
    16
   ],
   "win_prob_pct": 4.1,
-  "actual": null
+  "actual": [
+   2,
+   7,
+   9,
+   14,
+   28
+  ],
+  "actual_power": 3,
+  "best_matched": 2
  },
  {
   "game": "655",
@@ -17640,6 +17652,92 @@
    4
   ],
   "win_prob_pct": 6.98,
+  "actual": null
+ },
+ {
+  "game": "535",
+  "game_name": "Lotto 5/35",
+  "draw_id": "00927",
+  "predicted_at": "05/10/2026 13:28",
+  "sets": [
+   {
+    "numbers": [
+     7,
+     13,
+     20,
+     24,
+     28
+    ],
+    "power": 3,
+    "sum": 92,
+    "odd": 2,
+    "avg_score": 158.4
+   },
+   {
+    "numbers": [
+     8,
+     15,
+     21,
+     30,
+     32
+    ],
+    "power": 12,
+    "sum": 106,
+    "odd": 2,
+    "avg_score": 167.7
+   },
+   {
+    "numbers": [
+     6,
+     10,
+     11,
+     15,
+     35
+    ],
+    "power": 1,
+    "sum": 77,
+    "odd": 3,
+    "avg_score": 178.1
+   }
+  ],
+  "wheel": null,
+  "wheel12": null,
+  "antishare": {
+   "numbers": [
+    14,
+    22,
+    31,
+    33,
+    35
+   ],
+   "share_score": 6.25,
+   "power": 10
+  },
+  "power_top": [
+   3,
+   12,
+   1,
+   10,
+   9
+  ],
+  "top15": [
+   10,
+   30,
+   34,
+   11,
+   7,
+   35,
+   33,
+   2,
+   32,
+   8,
+   28,
+   13,
+   14,
+   15,
+   20
+  ],
+  "win_prob_pct": 4.1,
   "actual": null
  }
 ]
