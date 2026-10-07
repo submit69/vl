@@ -17500,7 +17500,8 @@
     "power": null,
     "sum": 152,
     "odd": 2,
-    "avg_score": 162.0
+    "avg_score": 162.0,
+    "matched": 1
    },
    {
     "numbers": [
@@ -17514,7 +17515,8 @@
     "power": null,
     "sum": 130,
     "odd": 4,
-    "avg_score": 178.7
+    "avg_score": 178.7,
+    "matched": 1
    },
    {
     "numbers": [
@@ -17528,7 +17530,8 @@
     "power": null,
     "sum": 124,
     "odd": 2,
-    "avg_score": 171.0
+    "avg_score": 171.0,
+    "matched": 1
    }
   ],
   "wheel": {
@@ -17576,7 +17579,16 @@
      33
     ]
    ],
-   "guarantee": "3-if-3"
+   "guarantee": "3-if-3",
+   "pool_hits": 0,
+   "matched": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "best_matched": 0,
+   "guarantee_ok": true
   },
   "wheel12": {
    "pool": [
@@ -17659,7 +17671,20 @@
      36
     ]
    ],
-   "guarantee": "3-if-4"
+   "guarantee": "3-if-4",
+   "pool_hits": 2,
+   "matched": [
+    2,
+    0,
+    1,
+    1,
+    1,
+    2,
+    0,
+    1
+   ],
+   "best_matched": 2,
+   "guarantee_ok": true
   },
   "antishare": {
    "numbers": [
@@ -17670,7 +17695,8 @@
     42,
     44
    ],
-   "share_score": 6.0
+   "share_score": 6.0,
+   "matched": 0
   },
   "power_top": [],
   "top15": [
@@ -17691,7 +17717,16 @@
    4
   ],
   "win_prob_pct": 6.98,
-  "actual": null
+  "actual": [
+   10,
+   14,
+   36,
+   37,
+   41,
+   43
+  ],
+  "actual_power": null,
+  "best_matched": 1
  },
  {
   "game": "535",
@@ -18026,7 +18061,8 @@
     "power": 12,
     "sum": 100,
     "odd": 2,
-    "avg_score": 165.4
+    "avg_score": 165.4,
+    "matched": 1
    },
    {
     "numbers": [
@@ -18039,7 +18075,8 @@
     "power": 10,
     "sum": 103,
     "odd": 3,
-    "avg_score": 168.6
+    "avg_score": 168.6,
+    "matched": 1
    },
    {
     "numbers": [
@@ -18052,7 +18089,8 @@
     "power": 9,
     "sum": 103,
     "odd": 3,
-    "avg_score": 170.5
+    "avg_score": 170.5,
+    "matched": 1
    }
   ],
   "wheel": null,
@@ -18066,7 +18104,8 @@
     35
    ],
    "share_score": 6.25,
-   "power": 10
+   "power": 10,
+   "matched": 1
   },
   "power_top": [
    12,
@@ -18091,6 +18130,311 @@
    27,
    20,
    14
+  ],
+  "win_prob_pct": 4.1,
+  "actual": [
+   1,
+   6,
+   21,
+   23,
+   35
+  ],
+  "actual_power": 7,
+  "best_matched": 1
+ },
+ {
+  "game": "645",
+  "game_name": "Mega 6/45",
+  "draw_id": "01573",
+  "predicted_at": "08/10/2026 01:57",
+  "sets": [
+   {
+    "numbers": [
+     15,
+     16,
+     22,
+     25,
+     27,
+     33
+    ],
+    "power": null,
+    "sum": 138,
+    "odd": 4,
+    "avg_score": 178.6
+   },
+   {
+    "numbers": [
+     3,
+     6,
+     26,
+     31,
+     36,
+     38
+    ],
+    "power": null,
+    "sum": 140,
+    "odd": 2,
+    "avg_score": 165.1
+   },
+   {
+    "numbers": [
+     2,
+     10,
+     20,
+     22,
+     41,
+     43
+    ],
+    "power": null,
+    "sum": 138,
+    "odd": 2,
+    "avg_score": 161.8
+   }
+  ],
+  "wheel": {
+   "pool": [
+    3,
+    6,
+    15,
+    27,
+    31,
+    33,
+    36,
+    41
+   ],
+   "tickets": [
+    [
+     3,
+     15,
+     27,
+     33,
+     36,
+     41
+    ],
+    [
+     3,
+     6,
+     27,
+     31,
+     33,
+     36
+    ],
+    [
+     6,
+     15,
+     31,
+     33,
+     36,
+     41
+    ],
+    [
+     3,
+     6,
+     15,
+     27,
+     31,
+     41
+    ]
+   ],
+   "guarantee": "3-if-3"
+  },
+  "wheel12": {
+   "pool": [
+    2,
+    3,
+    6,
+    15,
+    16,
+    20,
+    27,
+    31,
+    33,
+    36,
+    41,
+    43
+   ],
+   "tickets": [
+    [
+     2,
+     16,
+     20,
+     33,
+     41,
+     43
+    ],
+    [
+     2,
+     3,
+     6,
+     15,
+     27,
+     31
+    ],
+    [
+     3,
+     15,
+     16,
+     31,
+     36,
+     43
+    ],
+    [
+     6,
+     20,
+     27,
+     33,
+     36,
+     41
+    ],
+    [
+     6,
+     16,
+     20,
+     27,
+     33,
+     43
+    ],
+    [
+     3,
+     15,
+     16,
+     31,
+     41,
+     43
+    ],
+    [
+     2,
+     3,
+     15,
+     20,
+     31,
+     36
+    ],
+    [
+     2,
+     6,
+     20,
+     27,
+     36,
+     41
+    ]
+   ],
+   "guarantee": "3-if-4"
+  },
+  "antishare": {
+   "numbers": [
+    33,
+    35,
+    37,
+    40,
+    42,
+    44
+   ],
+   "share_score": 5.75
+  },
+  "power_top": [],
+  "top15": [
+   27,
+   15,
+   33,
+   6,
+   31,
+   36,
+   41,
+   3,
+   2,
+   16,
+   43,
+   20,
+   12,
+   26,
+   10
+  ],
+  "win_prob_pct": 6.98,
+  "actual": null
+ },
+ {
+  "game": "535",
+  "game_name": "Lotto 5/35",
+  "draw_id": "00932",
+  "predicted_at": "08/10/2026 01:57",
+  "sets": [
+   {
+    "numbers": [
+     2,
+     15,
+     19,
+     22,
+     30
+    ],
+    "power": 12,
+    "sum": 88,
+    "odd": 2,
+    "avg_score": 168.8
+   },
+   {
+    "numbers": [
+     7,
+     10,
+     19,
+     29,
+     33
+    ],
+    "power": 10,
+    "sum": 98,
+    "odd": 4,
+    "avg_score": 162.9
+   },
+   {
+    "numbers": [
+     9,
+     11,
+     16,
+     20,
+     34
+    ],
+    "power": 9,
+    "sum": 90,
+    "odd": 2,
+    "avg_score": 164.7
+   }
+  ],
+  "wheel": null,
+  "wheel12": null,
+  "antishare": {
+   "numbers": [
+    14,
+    24,
+    30,
+    32,
+    34
+   ],
+   "share_score": 6.25,
+   "power": 10
+  },
+  "power_top": [
+   12,
+   10,
+   9,
+   6,
+   3
+  ],
+  "top15": [
+   35,
+   10,
+   22,
+   11,
+   30,
+   15,
+   7,
+   34,
+   16,
+   13,
+   33,
+   1,
+   27,
+   14,
+   28
   ],
   "win_prob_pct": 4.1,
   "actual": null
