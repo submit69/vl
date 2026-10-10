@@ -18641,7 +18641,9 @@
     "power": 19,
     "sum": 196,
     "odd": 4,
-    "avg_score": 145.0
+    "avg_score": 145.0,
+    "matched": 1,
+    "power_matched": false
    },
    {
     "numbers": [
@@ -18655,7 +18657,9 @@
     "power": 53,
     "sum": 147,
     "odd": 3,
-    "avg_score": 147.1
+    "avg_score": 147.1,
+    "matched": 0,
+    "power_matched": false
    },
    {
     "numbers": [
@@ -18669,7 +18673,9 @@
     "power": 34,
     "sum": 148,
     "odd": 4,
-    "avg_score": 155.5
+    "avg_score": 155.5,
+    "matched": 0,
+    "power_matched": false
    }
   ],
   "wheel": {
@@ -18717,7 +18723,16 @@
      27
     ]
    ],
-   "guarantee": "3-if-3"
+   "guarantee": "3-if-3",
+   "pool_hits": 0,
+   "matched": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "best_matched": 0,
+   "guarantee_ok": true
   },
   "wheel12": {
    "pool": [
@@ -18800,7 +18815,20 @@
      46
     ]
    ],
-   "guarantee": "3-if-4"
+   "guarantee": "3-if-4",
+   "pool_hits": 0,
+   "matched": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "best_matched": 0,
+   "guarantee_ok": true
   },
   "antishare": {
    "numbers": [
@@ -18812,7 +18840,9 @@
     54
    ],
    "share_score": 5.75,
-   "power": 43
+   "power": 43,
+   "matched": 0,
+   "power_matched": false
   },
   "power_top": [
    19,
@@ -18839,7 +18869,16 @@
    16
   ],
   "win_prob_pct": 3.95,
-  "actual": null
+  "actual": [
+   14,
+   17,
+   21,
+   23,
+   24,
+   39
+  ],
+  "actual_power": 30,
+  "best_matched": 1
  },
  {
   "game": "535",
@@ -19430,6 +19469,224 @@
    13
   ],
   "win_prob_pct": 4.1,
+  "actual": null
+ },
+ {
+  "game": "655",
+  "game_name": "Power 6/55",
+  "draw_id": "01410",
+  "predicted_at": "10/10/2026 18:45",
+  "sets": [
+   {
+    "numbers": [
+     13,
+     18,
+     25,
+     27,
+     38,
+     47
+    ],
+    "power": 19,
+    "sum": 168,
+    "odd": 4,
+    "avg_score": 155.0
+   },
+   {
+    "numbers": [
+     7,
+     11,
+     17,
+     24,
+     39,
+     52
+    ],
+    "power": 53,
+    "sum": 150,
+    "odd": 4,
+    "avg_score": 148.3
+   },
+   {
+    "numbers": [
+     1,
+     7,
+     9,
+     38,
+     41,
+     52
+    ],
+    "power": 34,
+    "sum": 148,
+    "odd": 4,
+    "avg_score": 147.8
+   }
+  ],
+  "wheel": {
+   "pool": [
+    1,
+    5,
+    7,
+    11,
+    13,
+    18,
+    25,
+    27
+   ],
+   "tickets": [
+    [
+     1,
+     7,
+     11,
+     18,
+     25,
+     27
+    ],
+    [
+     1,
+     5,
+     11,
+     13,
+     18,
+     25
+    ],
+    [
+     5,
+     7,
+     13,
+     18,
+     25,
+     27
+    ],
+    [
+     1,
+     5,
+     7,
+     11,
+     13,
+     27
+    ]
+   ],
+   "guarantee": "3-if-3"
+  },
+  "wheel12": {
+   "pool": [
+    1,
+    5,
+    7,
+    9,
+    11,
+    13,
+    14,
+    18,
+    24,
+    25,
+    27,
+    52
+   ],
+   "tickets": [
+    [
+     1,
+     11,
+     13,
+     24,
+     27,
+     52
+    ],
+    [
+     1,
+     5,
+     7,
+     9,
+     14,
+     18
+    ],
+    [
+     5,
+     9,
+     11,
+     18,
+     25,
+     52
+    ],
+    [
+     7,
+     13,
+     14,
+     24,
+     25,
+     27
+    ],
+    [
+     7,
+     11,
+     13,
+     14,
+     24,
+     52
+    ],
+    [
+     5,
+     9,
+     11,
+     18,
+     27,
+     52
+    ],
+    [
+     1,
+     5,
+     9,
+     13,
+     18,
+     25
+    ],
+    [
+     1,
+     7,
+     13,
+     14,
+     25,
+     27
+    ]
+   ],
+   "guarantee": "3-if-4"
+  },
+  "antishare": {
+   "numbers": [
+    35,
+    37,
+    41,
+    44,
+    47,
+    50
+   ],
+   "share_score": 5.75,
+   "power": 32
+  },
+  "power_top": [
+   19,
+   53,
+   34,
+   9,
+   18
+  ],
+  "top15": [
+   18,
+   7,
+   11,
+   13,
+   1,
+   25,
+   27,
+   5,
+   24,
+   9,
+   14,
+   52,
+   23,
+   38,
+   21
+  ],
+  "win_prob_pct": 3.95,
   "actual": null
  }
 ]
